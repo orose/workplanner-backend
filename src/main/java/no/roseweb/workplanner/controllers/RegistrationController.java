@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping(value = "/register")
 public class RegistrationController {
@@ -19,8 +21,11 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "")
-    public User registerUser(@RequestBody User user) {
+    public User registerUser(@RequestBody User user, HttpServletResponse response) {
         userService.save(user);
+
+        response.setStatus(HttpServletResponse.SC_CREATED);
+
         return user;
     }
 }

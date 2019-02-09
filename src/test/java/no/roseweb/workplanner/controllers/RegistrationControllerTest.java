@@ -25,6 +25,6 @@ public class RegistrationControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"email\":\"oystein.rose@gmail.com\",\"firstname\":\"Øystein\",\"lastname\":\"Rose\",\"password\":\"secret\"}")
         )
-        .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 }
