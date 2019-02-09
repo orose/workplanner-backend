@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(restAuthenticationEntryPoint)
             .and()
             .authorizeRequests()
-            .antMatchers("/resources/**", "/register", "/api/**").permitAll()
+            .antMatchers("/resources/**", "/register").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
