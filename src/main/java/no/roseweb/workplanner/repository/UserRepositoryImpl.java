@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public void add(User user) {
         String sql = "insert into user (email, firstname, lastname, password) values (?, ?, ?, ?)";
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
