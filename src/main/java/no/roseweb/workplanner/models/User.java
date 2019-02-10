@@ -8,6 +8,7 @@ public class User {
     private String lastname;
     private String password;
     private Set<Role> roles;
+    private Long organizationId;
 
     public String getEmail() {
         return email;
@@ -47,5 +48,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 }

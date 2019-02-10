@@ -20,11 +20,10 @@ public class RegistrationControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void allUsersShouldHaveAccess() throws Exception {
+    public void allUsersShouldBeAbleToRegister() throws Exception {
         mvc.perform(post("/register")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"oystein.rose@gmail.com\",\"firstname\":\"Øystein\",\"lastname\":\"Rose\",\"password\":\"secret\"}")
-        )
-                .andExpect(status().isCreated());
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"email\":\"oystein.rose@gmail.com\",\"firstname\":\"Øystein\",\"lastname\":\"Rose\",\"password\":\"secret\"}")
+        ).andExpect(status().isCreated());
     }
 }

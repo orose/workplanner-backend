@@ -14,6 +14,7 @@ public class UserRowMapper implements RowMapper {
         user.setEmail(rs.getString("email"));
         user.setFirstname(rs.getString("firstname"));
         user.setLastname(rs.getString("lastname"));
+        user.setOrganizationId(rs.getLong("organization_id"));
 
         return user;
     }

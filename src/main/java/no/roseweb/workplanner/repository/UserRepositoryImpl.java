@@ -5,9 +5,9 @@ import no.roseweb.workplanner.models.rowmappers.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private JdbcTemplate jdbcTemplate;
@@ -21,11 +21,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void add(User user) {
-        String sql = "insert into user (email, firstname, lastname, password) values (?, ?, ?, ?)";
+        String sql = "insert into user (email, firstname, lastname, password, organization_id) values (?, ?, ?, ?, ?)";
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        jdbcTemplate.update(sql, user.getEmail(), user.getFirstname(), user.getLastname(), user.getPassword());
+        jdbcTemplate.update(sql, user.getEmail(), user.getFirstname(), user.getLastname(), user.getPassword(), user.getOrganizationId());
     }
 
     @Override

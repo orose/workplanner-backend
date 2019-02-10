@@ -5,13 +5,13 @@ import no.roseweb.workplanner.models.rowmappers.RoleRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
     private JdbcTemplate jdbcTemplate;
