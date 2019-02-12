@@ -2,7 +2,6 @@ package no.roseweb.workplanner.repository;
 
 import no.roseweb.workplanner.models.User;
 import no.roseweb.workplanner.models.rowmappers.UserRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -11,12 +10,11 @@ import org.springframework.stereotype.Repository;
 public class UserRepositoryImpl implements UserRepository {
 
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
