@@ -17,8 +17,9 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<flyway.user>root</flyway.user>
-		<flyway.password></flyway.password>
+		<flyway.password />
 		<flyway.schemas>wo</flyway.schemas>
+        <checkstyle-maven-plugin.version>3.0.0</checkstyle-maven-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -63,7 +64,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
@@ -115,7 +115,36 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-maven-plugin.version}</version>
+				<configuration>
+					<configLocation>checkstyle-config.xml</configLocation>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle-maven-plugin.version}</version>
+				<configuration>
+					<configLocation>checkstyle-config.xml</configLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
 
 </project>
