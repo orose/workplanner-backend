@@ -23,19 +23,20 @@ public class UserRepositoryImpl implements UserRepository {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        jdbcTemplate.update(sql, user.getEmail(), user.getFirstname(), user.getLastname(), user.getPassword(), user.getOrganizationId());
+        jdbcTemplate.update(
+            sql,
+            user.getEmail(),
+            user.getFirstname(),
+            user.getLastname(),
+            user.getPassword(),
+            user.getOrganizationId()
+        );
     }
 
     @Override
     public User findByEmail(String email) {
         String sql = "select * from user where email = ?";
 
-        User user = (User)jdbcTemplate.queryForObject(
-                sql,
-                new Object[] { email },
-                new UserRowMapper()
-        );
-
-        return user;
+        return (User) jdbcTemplate.queryForObject(sql, new Object[] {email}, new UserRowMapper());
     }
 }

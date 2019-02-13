@@ -20,7 +20,11 @@ public class RegistrationController {
     private InviteRepository inviteRepository;
     private OrganizationRepository organizationRepository;
 
-    RegistrationController(UserService userService, InviteRepository inviteRepository, OrganizationRepository organizationRepository) {
+    RegistrationController(
+        UserService userService,
+        InviteRepository inviteRepository,
+        OrganizationRepository organizationRepository
+    ) {
         this.userService = userService;
         this.inviteRepository = inviteRepository;
         this.organizationRepository = organizationRepository;

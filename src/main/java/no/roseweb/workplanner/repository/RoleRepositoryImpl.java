@@ -36,10 +36,10 @@ public class RoleRepositoryImpl implements RoleRepository {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         List<Role> roles = new ArrayList<>();
 
-        for(Map row : rows) {
+        for (Map row : rows) {
             Role r = new Role();
-            r.setId((Long)(row.get("id")));
-            r.setName((String)(row.get("name")));
+            r.setId((Long) row.get("id"));
+            r.setName((String) row.get("name"));
         }
 
         return roles;
@@ -49,12 +49,6 @@ public class RoleRepositoryImpl implements RoleRepository {
     public Role findById(Long id) {
         String sql = "select * from role where id = ?";
 
-        Role role = (Role)jdbcTemplate.queryForObject(
-                sql,
-                new Object[] { id },
-                new RoleRowMapper()
-        );
-
-        return role;
+        return (Role) jdbcTemplate.queryForObject(sql, new Object[] {id}, new RoleRowMapper());
     }
 }

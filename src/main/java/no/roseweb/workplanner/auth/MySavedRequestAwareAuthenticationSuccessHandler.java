@@ -19,7 +19,11 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SimpleUrlAu
     private RequestCache requestCache = new HttpSessionRequestCache();
 
     @Override
-    public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws ServletException, IOException {
+    public void onAuthenticationSuccess(
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
+    ) throws ServletException, IOException {
         final SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest == null) {
@@ -27,7 +31,10 @@ public class MySavedRequestAwareAuthenticationSuccessHandler extends SimpleUrlAu
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || (targetUrlParameter != null && StringUtils.hasText(request.getParameter(targetUrlParameter)))) {
+        if (isAlwaysUseDefaultTargetUrl()
+                || (targetUrlParameter != null
+                && StringUtils.hasText(request.getParameter(targetUrlParameter)))
+        ) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;

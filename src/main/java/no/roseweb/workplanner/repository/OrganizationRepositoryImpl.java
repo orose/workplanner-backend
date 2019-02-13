@@ -24,12 +24,12 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     @Override
     public Organization add(Organization organization) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into organization (" +
-                "name," +
-                "organization_number," +
-                "email" +
-                ") values (" +
-                ":name, :organization_number, :email)";
+        String sql = "insert into organization ("
+                + "name,"
+                + "organization_number, "
+                + "email "
+                + ") values ("
+                + ":name, :organization_number, :email)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("name", organization.getName())
@@ -57,7 +57,8 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
                 .addValue("id", id);
 
         try {
-            return (Organization) namedParameterJdbcTemplate.queryForObject(sql, parameters, new OrganizationRowMapper());
+            return (Organization) namedParameterJdbcTemplate.queryForObject(
+                    sql, parameters, new OrganizationRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

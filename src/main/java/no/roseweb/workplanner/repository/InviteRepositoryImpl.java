@@ -34,11 +34,7 @@ public class InviteRepositoryImpl implements InviteRepository {
         Invite invite;
 
         try {
-            invite = (Invite) jdbcTemplate.queryForObject(
-                    sql,
-                    new Object[] { email },
-                    new InviteRowMapper()
-            );
+            invite = (Invite) jdbcTemplate.queryForObject(sql, new Object[] {email}, new InviteRowMapper());
         } catch (DataAccessException e) {
             return null;
         }
