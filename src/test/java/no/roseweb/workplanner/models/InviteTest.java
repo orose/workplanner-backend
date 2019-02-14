@@ -16,4 +16,12 @@ public class InviteTest {
         assertEquals("email@example.com", i.getEmail());
         assertEquals(new Long(1), i.getOrganizationId());
     }
+
+    @Test
+    public void testConstructor() {
+        Invite i = new Invite("email@example.com", 1L);
+
+        assertEquals("email@example.com", i.getEmail());
+        assertEquals(new Long(1), i.getOrganizationId());
+    }
 }

@@ -18,7 +18,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void add(User user) {
+    public User add(User user) {
         String sql = "insert into user (email, firstname, lastname, password, organization_id) values (?, ?, ?, ?, ?)";
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -31,6 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
             user.getPassword(),
             user.getOrganizationId()
         );
+        return this.findByEmail(user.getEmail());
     }
 
     @Override

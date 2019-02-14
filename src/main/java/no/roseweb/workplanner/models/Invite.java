@@ -4,6 +4,13 @@ public class Invite {
     private Long organizationId;
     private String email;
 
+    public Invite() { }
+
+    public Invite(String email, Long organizationId) {
+       this.email = email;
+       this.organizationId = organizationId;
+    }
+
     public Long getOrganizationId() {
         return organizationId;
     }
