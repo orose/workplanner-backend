@@ -56,6 +56,6 @@ public class TeamRepositoryImpl implements TeamRepository {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", team.getId());
 
-        namedParameterJdbcTemplate.update( sql, parameters);
+        namedParameterJdbcTemplate.update(sql, parameters);
     }
 }
