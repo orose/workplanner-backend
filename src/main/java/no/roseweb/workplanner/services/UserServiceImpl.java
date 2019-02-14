@@ -1,8 +1,8 @@
 package no.roseweb.workplanner.services;
 
 import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.repository.RoleRepository;
-import no.roseweb.workplanner.repository.UserRepository;
+import no.roseweb.workplanner.repositories.RoleRepository;
+import no.roseweb.workplanner.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

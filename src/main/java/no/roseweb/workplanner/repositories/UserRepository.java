@@ -1,4 +1,4 @@
-package no.roseweb.workplanner.repository;
+package no.roseweb.workplanner.repositories;
 
 import no.roseweb.workplanner.models.User;
 

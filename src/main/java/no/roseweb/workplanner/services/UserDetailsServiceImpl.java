@@ -2,7 +2,7 @@ package no.roseweb.workplanner.services;
 
 import no.roseweb.workplanner.models.Role;
 import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.repository.UserRepository;
+import no.roseweb.workplanner.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
