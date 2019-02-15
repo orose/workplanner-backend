@@ -5,8 +5,10 @@ import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.User;
 import no.roseweb.workplanner.repositories.InviteRepositoryImpl;
 import no.roseweb.workplanner.repositories.OrganizationRepositoryImpl;
+import no.roseweb.workplanner.repositories.TeamRepositoryImpl;
 import no.roseweb.workplanner.repositories.UserRepository;
 import no.roseweb.workplanner.repositories.UserRepositoryImpl;
+import no.roseweb.workplanner.repositories.UserTeamRepositoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -33,6 +35,12 @@ public class UserServiceTest {
     @Autowired
     private InviteRepositoryImpl inviteRepository;
 
+    @Autowired
+    private TeamRepositoryImpl teamRepository;
+
+    @Autowired
+    private UserTeamRepositoryImpl userTeamRepository;
+
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -57,7 +65,7 @@ public class UserServiceTest {
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 
-        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, userRepository);
+        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
         User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isEqualTo(invite.getOrganizationId());
@@ -73,7 +81,7 @@ public class UserServiceTest {
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 
-        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, userRepository);
+        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
         User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isPositive();

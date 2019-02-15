@@ -45,7 +45,7 @@ public class UserTeamRepositoryTest {
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 
-        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, userRepository);
+        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
         User createdUser = userService.create(inputUser);
 
         Team t = new Team();
