@@ -21,7 +21,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Role addRole(Role role) {
+    public Role create(Role role) {
         String sql = "insert into role (name) values (?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

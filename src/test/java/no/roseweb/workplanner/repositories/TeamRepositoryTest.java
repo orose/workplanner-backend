@@ -30,7 +30,7 @@ public class TeamRepositoryTest {
         o.setOrganizationNumber("1234567890");
 
         OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
-        Organization organization = organizationRepository.add(o);
+        Organization organization = organizationRepository.create(o);
 
         Team t = new Team("name", organization.getId());
 

@@ -22,7 +22,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     }
 
     @Override
-    public Organization add(Organization organization) {
+    public Organization create(Organization organization) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into organization ("
                 + "name,"

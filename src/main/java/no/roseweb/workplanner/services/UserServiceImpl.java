@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
             organization = new Organization();
             organization.setEmail(user.getEmail());
             organization.setName(user.getFirstname() + " organization");
-            organization = organizationRepository.add(organization);
+            organization = organizationRepository.create(organization);
         }
 
         user.setOrganizationId(organization.getId());
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         //user.setRoles(new HashSet<>(roleRepository.findAll()));
-        return userRepository.add(user);
+        return userRepository.create(user);
     }
 
     @Override

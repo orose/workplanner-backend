@@ -7,5 +7,5 @@ import java.util.List;
 public interface RoleRepository {
     List<Role> findAllOrderedByName();
     Role findById(Long id);
-    Role addRole(Role role);
+    Role create(Role role);
 }

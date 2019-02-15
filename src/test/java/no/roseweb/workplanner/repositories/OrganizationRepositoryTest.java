@@ -31,9 +31,9 @@ public class OrganizationRepositoryTest {
         organization.setName("organization name");
         organization.setEmail("organization@email.com");
         organization.setOrganizationNumber("1234567890");
-        organization = organizationRepository.add(organization);
+        organization = organizationRepository.create(organization);
 
-        Organization existing = organizationRepository.findById(1L);
+        Organization existing = organizationRepository.findById(organization.getId());
         assertThat(existing).isNotNull();
 
         Organization nonExisting = organizationRepository.findById(99999L);

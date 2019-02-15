@@ -39,12 +39,12 @@ public class UserRepositoryTest {
         organization.setName("organization name");
         organization.setEmail("organization@email.com");
         organization.setOrganizationNumber("1234567890");
-        organization = organizationRepository.add(organization);
+        organization = organizationRepository.create(organization);
 
         User user = new User();
         user.setEmail("test");
         user.setOrganizationId(organization.getId());
-        userRepository.add(user);
+        userRepository.create(user);
 
         User u = userRepository.findByEmail("test");
         assertThat(u).isNotNull();

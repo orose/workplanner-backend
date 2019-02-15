@@ -30,7 +30,7 @@ public class InviteRepositoryTest {
         organization.setName("organization name");
         organization.setEmail("organization@email.com");
         organization.setOrganizationNumber("1234567890");
-        organizationRepository.add(organization);
+        organizationRepository.create(organization);
 
         InviteRepository inviteRepository = new InviteRepositoryImpl(jdbcTemplate);
         Invite invite = new Invite();
