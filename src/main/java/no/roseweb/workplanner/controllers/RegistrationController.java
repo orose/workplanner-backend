@@ -20,7 +20,7 @@ public class RegistrationController {
 
     @PostMapping(value = "")
     public User registerUser(@RequestBody User user, HttpServletResponse response) {
-        User createdUser = userService.add(user);
+        User createdUser = userService.create(user);
 
         response.setStatus(HttpServletResponse.SC_CREATED);
 

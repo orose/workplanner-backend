@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User add(User user) {
+    public User create(User user) {
         Invite invite = inviteRepository.findByEmail(user.getEmail());
 
         Organization organization;

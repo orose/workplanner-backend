@@ -58,7 +58,7 @@ public class UserServiceTest {
         inputUser.setLastname("Lastname");
 
         UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, userRepository);
-        User createdUser = userService.add(inputUser);
+        User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isEqualTo(invite.getOrganizationId());
     }
@@ -74,7 +74,7 @@ public class UserServiceTest {
         inputUser.setLastname("Lastname");
 
         UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, userRepository);
-        User createdUser = userService.add(inputUser);
+        User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isPositive();
         assertThat(createdUser.getEmail()).isEqualTo(inputUser.getEmail());
