@@ -44,9 +44,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     @Override
     public List<Organization> findAllOrderedByName() {
         String sql = "select * from organization order by name";
-        List<Organization> organizations = namedParameterJdbcTemplate.query(sql, new OrganizationRowMapper());
-
-        return organizations;
+        return namedParameterJdbcTemplate.query(sql, new OrganizationRowMapper());
     }
 
     @Override
