@@ -17,7 +17,7 @@ public class InviteRepositoryImpl implements InviteRepository {
 
 
     @Override
-    public Invite add(Invite invite) {
+    public Invite create(Invite invite) {
         String sql = "insert into invite (email, organization_id) values (?, ?)";
 
         jdbcTemplate.update(sql,

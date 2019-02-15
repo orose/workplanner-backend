@@ -23,7 +23,7 @@ public class InviteRepositoryTest {
     private JdbcTemplate jdbcTemplate;
 
     @Test
-    public void UserRepositoryAndOrganizationTest() {
+    public void CrudFunctionality() {
         OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
 
         Organization organization = new Organization();
@@ -37,7 +37,7 @@ public class InviteRepositoryTest {
         invite.setEmail("test@email.com");
         invite.setOrganizationId(1L);
 
-        inviteRepository.add(invite);
+        inviteRepository.create(invite);
         Invite fetchedInvite = inviteRepository.findByEmail("test@email.com");
         assertThat(fetchedInvite).isNotNull();
 

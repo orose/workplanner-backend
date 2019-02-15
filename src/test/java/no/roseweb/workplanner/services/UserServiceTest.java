@@ -50,7 +50,7 @@ public class UserServiceTest {
         o.setName("Test");
         Organization organization = organizationRepository.add(o);
         Invite invite = new Invite("user@example.com", organization.getId());
-        inviteRepository.add(invite);
+        inviteRepository.create(invite);
 
         User inputUser = new User();
         inputUser.setEmail("user@example.com");
