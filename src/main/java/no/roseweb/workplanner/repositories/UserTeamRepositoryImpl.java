@@ -41,10 +41,11 @@ public class UserTeamRepositoryImpl implements UserTeamRepository {
 
     @Override
     public void remove(UserTeam userTeam) {
-        String sql = "delete from user_team where id = :id";
+        String sql = "delete from user_team where user_email = :user_email and team_id = :team_id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", userTeam.getId());
+                .addValue("user_email", userTeam.getUserEmail())
+                .addValue("team_id", userTeam.getTeamId());
 
         namedParameterJdbcTemplate.update(sql, parameters);
     }

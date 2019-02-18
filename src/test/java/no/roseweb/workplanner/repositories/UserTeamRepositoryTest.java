@@ -61,6 +61,14 @@ public class UserTeamRepositoryTest {
 
         assertThat(userTeam.getUserEmail()).isEqualTo(createdUser.getEmail());
         assertThat(userTeam.getId()).isPositive();
+
+        Long id = userTeam.getId();
+        UserTeam foundUserTeam = userTeamRepository.findById(id);
+        assertThat(foundUserTeam.getId()).isEqualTo(id);
+
+        userTeamRepository.remove(userTeam);
+        UserTeam deletedUserTeam = userTeamRepository.findById(id);
+        assertThat(deletedUserTeam).isNull();
     }
 
 }

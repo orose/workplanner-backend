@@ -7,4 +7,5 @@ public interface UserService {
     User create(User user);
     User findByEmail(String email);
     UserTeam connectToTeam(String email, Long teamId, String permissionKey);
+    void disconnectFromTeam(String email, Long teamId);
 }

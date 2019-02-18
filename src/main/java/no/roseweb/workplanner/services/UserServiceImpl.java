@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         Invite invite = inviteRepository.findByEmail(user.getEmail());
+        Team createdTeam = null;
 
         Organization organization;
         if (invite != null) {
@@ -51,13 +52,19 @@ public class UserServiceImpl implements UserService {
             Team team = new Team();
             team.setName("Team A");
             team.setOrganizationId(organization.getId());
-            teamRepository.create(team);
+            createdTeam = teamRepository.create(team);
         }
 
         user.setOrganizationId(organization.getId());
         //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         //user.setRoles(new HashSet<>(roleRepository.findAll()));
-        return userRepository.create(user);
+        User createdUser = userRepository.create(user);
+
+        if (createdTeam != null)  {
+            connectToTeam(createdUser.getEmail(), createdTeam.getId(), "ADMIN");
+        }
+
+        return createdUser;
     }
 
     @Override
@@ -68,6 +75,15 @@ public class UserServiceImpl implements UserService {
         ut.setPermissionKey(permissionKey);
 
         return userTeamRepository.create(ut);
+    }
+
+    @Override
+    public void disconnectFromTeam(String email, Long teamId) {
+        UserTeam ut = new UserTeam();
+        ut.setTeamId(teamId);
+        ut.setUserEmail(email);
+
+        userTeamRepository.remove(ut);
     }
 
     @Override
