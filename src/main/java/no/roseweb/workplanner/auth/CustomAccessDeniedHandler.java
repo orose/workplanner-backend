@@ -17,7 +17,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         final HttpServletResponse response,
         final AccessDeniedException ex
     ) throws IOException, ServletException {
-        response.getOutputStream().print("Error Message Goes Here");
+        response.getOutputStream().print("Error Message Goes Here: " + ex.getMessage());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         // response.sendRedirect("/my-error-page");
     }

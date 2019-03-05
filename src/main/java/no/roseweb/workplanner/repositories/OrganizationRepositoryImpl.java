@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
     }
 
     @Override
+    @PostAuthorize("hasPermission(returnObject, 'READ')")
     public Organization findById(Long id) {
         String sql = "select * from organization where id = :id";
 
