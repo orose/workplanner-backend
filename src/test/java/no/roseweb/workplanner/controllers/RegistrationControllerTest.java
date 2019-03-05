@@ -23,7 +23,7 @@ public class RegistrationControllerTest {
     public void allUsersShouldBeAbleToRegister() throws Exception {
         mvc.perform(post("/register")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"email\":\"oystein.rose@gmail.com\",\"firstname\":\"Øystein\",\"lastname\":\"Rose\",\"password\":\"secret\"}")
+            .content("{\"email\":\"email@example.com\",\"firstname\":\"first\",\"lastname\":\"last\",\"password\":\"secret\"}")
         ).andExpect(status().isCreated());
     }
 }
