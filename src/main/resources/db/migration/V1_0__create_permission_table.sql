@@ -3,4 +3,3 @@ create table permission (
   description varchar(255)
 );
 
-insert into permission (permission_key, description) values ('ADMIN', 'Administrator permission');

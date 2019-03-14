@@ -1,7 +1,15 @@
 package no.roseweb.workplanner.services;
 
-import no.roseweb.workplanner.models.*;
-import no.roseweb.workplanner.repositories.*;
+import no.roseweb.workplanner.models.Invite;
+import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.models.Team;
+import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.models.UserTeam;
+import no.roseweb.workplanner.repositories.InviteRepository;
+import no.roseweb.workplanner.repositories.OrganizationRepository;
+import no.roseweb.workplanner.repositories.TeamRepository;
+import no.roseweb.workplanner.repositories.UserRepository;
+import no.roseweb.workplanner.repositories.UserTeamRepository;
 import org.springframework.stereotype.Service;
 
 @Service
