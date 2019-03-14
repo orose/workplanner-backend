@@ -44,6 +44,10 @@ public class InviteRepositoryImpl implements InviteRepository {
 
     @Override
     public void delete(Invite invite) {
+        if (invite == null) {
+            return;
+        }
+
         String sql = "delete from invite where email = ?";
 
         jdbcTemplate.update(sql, invite.getEmail());

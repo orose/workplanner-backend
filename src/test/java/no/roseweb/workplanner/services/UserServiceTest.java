@@ -3,12 +3,7 @@ package no.roseweb.workplanner.services;
 import no.roseweb.workplanner.models.Invite;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.repositories.InviteRepositoryImpl;
-import no.roseweb.workplanner.repositories.OrganizationRepositoryImpl;
-import no.roseweb.workplanner.repositories.TeamRepositoryImpl;
-import no.roseweb.workplanner.repositories.UserRepository;
-import no.roseweb.workplanner.repositories.UserRepositoryImpl;
-import no.roseweb.workplanner.repositories.UserTeamRepositoryImpl;
+import no.roseweb.workplanner.repositories.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -69,6 +64,9 @@ public class UserServiceTest {
         User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isEqualTo(invite.getOrganizationId());
+
+        Invite deleted = inviteRepository.findByEmail(createdUser.getEmail());
+        assertThat(deleted).isNull();
     }
 
     @Test
