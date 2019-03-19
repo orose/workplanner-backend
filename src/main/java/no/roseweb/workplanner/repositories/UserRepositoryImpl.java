@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
@@ -38,6 +40,8 @@ public class UserRepositoryImpl implements UserRepository {
     public User findByEmail(String email) {
         String sql = "select * from user where email = ?";
 
-        return (User) jdbcTemplate.queryForObject(sql, new Object[] {email}, new UserRowMapper());
+        List<User> userList = jdbcTemplate.query(sql, new Object[] {email}, new UserRowMapper());
+
+        return userList.isEmpty() ? null : userList.get(0);
     }
 }
