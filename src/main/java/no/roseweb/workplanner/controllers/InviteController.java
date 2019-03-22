@@ -20,10 +20,10 @@ public class InviteController {
     @RequestMapping(value = "/invite", method = RequestMethod.POST)
     public Invite createInvite(@RequestBody Invite invite, HttpServletResponse response) {
 
-        inviteRepository.create(invite);
+        Invite createdInvite = inviteRepository.create(invite);
 
         response.setStatus(HttpServletResponse.SC_CREATED);
 
-        return new Invite();
+        return createdInvite;
     }
 }
