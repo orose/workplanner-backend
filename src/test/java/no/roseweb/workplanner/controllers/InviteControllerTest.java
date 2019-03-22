@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @AutoConfigureMockMvc
-public class InvitationControllerTest extends BaseControllerTest {
+public class InviteControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
