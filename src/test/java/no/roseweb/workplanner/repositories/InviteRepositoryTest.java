@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -41,7 +43,11 @@ public class InviteRepositoryTest {
         Invite fetchedInvite = inviteRepository.findByEmail("test@email.com");
         assertThat(fetchedInvite).isNotNull();
 
-        inviteRepository.delete(fetchedInvite);
+        List<Invite> inviteArrayList = inviteRepository.findAllByOrganizationId(1L);
+        assertThat(inviteArrayList).isNotEmpty();
+        assertThat(inviteArrayList.get(0).getOrganizationId()).isEqualTo(1L);
+
+        inviteRepository.delete(fetchedInvite.getEmail());
         assertThat(inviteRepository.findByEmail("test@email.com")).isNull();
     }
 

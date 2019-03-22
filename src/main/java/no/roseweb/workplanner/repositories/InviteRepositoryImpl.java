@@ -3,8 +3,11 @@ package no.roseweb.workplanner.repositories;
 import no.roseweb.workplanner.models.Invite;
 import no.roseweb.workplanner.models.rowmappers.InviteRowMapper;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class InviteRepositoryImpl implements InviteRepository {
@@ -43,13 +46,23 @@ public class InviteRepositoryImpl implements InviteRepository {
     }
 
     @Override
-    public void delete(Invite invite) {
-        if (invite == null) {
-            return;
+    public List<Invite> findAllByOrganizationId(Long organizationId) {
+        String sql = "select * from invite where organization_id = ?";
+
+        List<Invite> invites =
+                jdbcTemplate.query(sql, new Object[] {organizationId}, new BeanPropertyRowMapper(Invite.class));
+
+        return invites;
+    }
+
+    @Override
+    public Integer delete(String email) {
+        if (email == null) {
+            return 0;
         }
 
         String sql = "delete from invite where email = ?";
 
-        jdbcTemplate.update(sql, invite.getEmail());
+        return new Integer(jdbcTemplate.update(sql, email));
     }
 }

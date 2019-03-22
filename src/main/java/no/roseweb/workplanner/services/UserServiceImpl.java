@@ -64,7 +64,9 @@ public class UserServiceImpl implements UserService {
             connectToTeam(createdUser.getEmail(), createdTeam.getId(), "ADMIN");
         }
 
-        inviteRepository.delete(invite);
+        if (invite != null) {
+            inviteRepository.delete(invite.getEmail());
+        }
 
         return createdUser;
     }
