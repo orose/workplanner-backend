@@ -5,6 +5,7 @@ import no.roseweb.workplanner.auth.MySavedRequestAwareAuthenticationSuccessHandl
 import no.roseweb.workplanner.auth.RestAuthenticationEntryPoint;
 import no.roseweb.workplanner.repositories.InviteRepository;
 import no.roseweb.workplanner.repositories.OrganizationRepository;
+import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -32,6 +33,9 @@ public class BaseControllerTest {
 
     @MockBean
     InviteRepository inviteRepository;
+
+    @MockBean
+    WorkorderRepository workorderRepository;
 
     @MockBean
     UserService userService;
