@@ -1,13 +1,13 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.repositories.WorkorderRepository;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.WorkorderRepository;
 
 @RestController
 public class WorkorderController {
@@ -17,7 +17,7 @@ public class WorkorderController {
         this.workorderRepository = workorderRepository;
     }
 
-    @RequestMapping(value = "/workorder", method = RequestMethod.POST)
+    @PostMapping(value = "/workorder")
     public Workorder createWorkorder(@RequestBody Workorder workorder, HttpServletResponse response) {
 
         Workorder createdWorkorder = workorderRepository.create(workorder);

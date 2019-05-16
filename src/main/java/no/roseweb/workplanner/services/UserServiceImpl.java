@@ -56,8 +56,6 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setOrganizationId(organization.getId());
-        //user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        //user.setRoles(new HashSet<>(roleRepository.findAll()));
         User createdUser = userRepository.create(user);
 
         if (createdTeam != null)  {

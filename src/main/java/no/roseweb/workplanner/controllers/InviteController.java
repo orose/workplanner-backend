@@ -1,15 +1,18 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.Invite;
-import no.roseweb.workplanner.repositories.InviteRepository;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import no.roseweb.workplanner.models.Invite;
+import no.roseweb.workplanner.repositories.InviteRepository;
 
 @RestController
 public class InviteController {
@@ -19,7 +22,7 @@ public class InviteController {
         this.inviteRepository = inviteRepository;
     }
 
-    @RequestMapping(value = "/invite", method = RequestMethod.POST)
+    @PostMapping(value = "/invite")
     public Invite createInvite(@RequestBody Invite invite, HttpServletResponse response) {
 
         Invite createdInvite = inviteRepository.create(invite);
@@ -29,7 +32,7 @@ public class InviteController {
         return createdInvite;
     }
 
-    @RequestMapping(value = "/invite", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/invite")
     public Integer deleteInvite(@RequestParam String email, HttpServletResponse response) {
 
         Integer affectedRows = inviteRepository.delete(email);
@@ -39,7 +42,7 @@ public class InviteController {
         return affectedRows;
     }
 
-    @RequestMapping(value = "/invite", method = RequestMethod.GET)
+    @GetMapping(value = "/invite")
     public List<Invite> findAllByOrganizationId(@RequestParam Long organizationId, HttpServletResponse response) {
 
         List<Invite> invites = inviteRepository.findAllByOrganizationId(organizationId);

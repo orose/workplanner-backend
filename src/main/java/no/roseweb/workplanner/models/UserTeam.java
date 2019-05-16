@@ -6,8 +6,6 @@ public class UserTeam {
     private Long teamId;
     private String permissionKey;
 
-    public UserTeam() { }
-
     public Long getId() {
         return id;
     }

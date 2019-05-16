@@ -49,10 +49,7 @@ public class InviteRepositoryImpl implements InviteRepository {
     public List<Invite> findAllByOrganizationId(Long organizationId) {
         String sql = "select * from invite where organization_id = ?";
 
-        List<Invite> invites =
-                jdbcTemplate.query(sql, new Object[] {organizationId}, new BeanPropertyRowMapper(Invite.class));
-
-        return invites;
+        return jdbcTemplate.query(sql, new Object[] {organizationId}, new BeanPropertyRowMapper(Invite.class));
     }
 
     @Override
@@ -63,6 +60,6 @@ public class InviteRepositoryImpl implements InviteRepository {
 
         String sql = "delete from invite where email = ?";
 
-        return new Integer(jdbcTemplate.update(sql, email));
+        return jdbcTemplate.update(sql, email);
     }
 }
