@@ -3,12 +3,21 @@ package no.roseweb.workplanner.models;
 import java.util.Set;
 
 public class User {
+    private Long id;
     private String email;
     private String firstname;
     private String lastname;
     private String password;
     private Set<Role> roles;
     private Long organizationId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;

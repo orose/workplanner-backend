@@ -10,6 +10,7 @@ public class UserTest {
     public void testGettersAndSetters() {
         User u = new User();
 
+        u.setId(1L);
         u.setEmail("email@example.com");
         u.setPassword("password");
         u.setFirstname("firstname");
@@ -19,5 +20,6 @@ public class UserTest {
         assertEquals("password", u.getPassword());
         assertEquals("firstname", u.getFirstname());
         assertEquals("lastname", u.getLastname());
+        assertEquals(new Long(1), u.getId());
     }
 }

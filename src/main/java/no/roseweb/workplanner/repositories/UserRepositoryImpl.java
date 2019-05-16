@@ -3,6 +3,11 @@ package no.roseweb.workplanner.repositories;
 import no.roseweb.workplanner.models.User;
 import no.roseweb.workplanner.models.rowmappers.UserRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -21,19 +26,29 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User create(User user) {
-        String sql = "insert into user (email, firstname, lastname, password, organization_id) values (?, ?, ?, ?, ?)";
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate =
+            new NamedParameterJdbcTemplate(jdbcTemplate);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into user ("
+            + "email, "
+            + "firstname, "
+            + "lastname, "
+            + "password, "
+            + "organization_id) values ("
+            + ":email, :firstname, :lastname, :password, :organization_id)";
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        jdbcTemplate.update(
-            sql,
-            user.getEmail(),
-            user.getFirstname(),
-            user.getLastname(),
-            user.getPassword(),
-            user.getOrganizationId()
-        );
-        return this.findByEmail(user.getEmail());
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("email", user.getEmail())
+            .addValue("firstname", user.getFirstname())
+            .addValue("lastname", user.getLastname())
+            .addValue("password", user.getPassword())
+            .addValue("organization_id", user.getOrganizationId());
+
+        namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
+        Long id = keyHolder.getKey().longValue();
+        return this.findById(id);
     }
 
     @Override
@@ -41,6 +56,15 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "select * from user where email = ?";
 
         List<User> userList = jdbcTemplate.query(sql, new Object[] {email}, new UserRowMapper());
+
+        return userList.isEmpty() ? null : userList.get(0);
+    }
+
+    @Override
+    public User findById(Long id) {
+        String sql = "select * from user where id = ?";
+
+        List<User> userList = jdbcTemplate.query(sql, new Object[] {id}, new UserRowMapper());
 
         return userList.isEmpty() ? null : userList.get(0);
     }

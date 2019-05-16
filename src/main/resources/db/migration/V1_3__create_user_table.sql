@@ -1,6 +1,7 @@
 create table if not exists user
 (
-    email varchar(255) not null primary key,
+    id int not null auto_increment primary key,
+    email varchar(255) not null unique,
     firstname varchar(255),
     lastname varchar(255),
     password varchar(255) not null,
