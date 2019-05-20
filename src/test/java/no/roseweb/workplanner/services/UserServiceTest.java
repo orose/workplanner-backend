@@ -1,9 +1,7 @@
 package no.roseweb.workplanner.services;
 
-import no.roseweb.workplanner.models.Invite;
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.repositories.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -17,7 +15,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import no.roseweb.workplanner.models.Invite;
+import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.repositories.InviteRepositoryImpl;
+import no.roseweb.workplanner.repositories.OrganizationRepositoryImpl;
+import no.roseweb.workplanner.repositories.TeamRepositoryImpl;
+import no.roseweb.workplanner.repositories.UserRepository;
+import no.roseweb.workplanner.repositories.UserRepositoryImpl;
+import no.roseweb.workplanner.repositories.UserTeamRepositoryImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,6 +70,7 @@ public class UserServiceTest {
         User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isEqualTo(invite.getOrganizationId());
+        assertThat(createdUser.getId()).isPositive();
 
         Invite deleted = inviteRepository.findByEmail(createdUser.getEmail());
         assertThat(deleted).isNull();
@@ -83,6 +90,7 @@ public class UserServiceTest {
         User createdUser = userService.create(inputUser);
 
         assertThat(createdUser.getOrganizationId()).isPositive();
+        assertThat(createdUser.getId()).isPositive();
         assertThat(createdUser.getEmail()).isEqualTo(inputUser.getEmail());
     }
 }

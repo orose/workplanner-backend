@@ -1,7 +1,7 @@
 package no.roseweb.workplanner.repositories;
 
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.User;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.models.User;
 
 @RunWith(SpringRunner.class)
 @DataJdbcTest
@@ -49,5 +50,6 @@ public class UserRepositoryTest {
         User u = userRepository.findByEmail("test");
         assertThat(u).isNotNull();
         assertThat(u.getOrganizationId()).isGreaterThanOrEqualTo(0L);
+        assertThat(u.getId()).isGreaterThanOrEqualTo(0L);
     }
 }
