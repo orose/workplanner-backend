@@ -1,0 +1,25 @@
+== Invite
+
+=== Create
+
+.request
+include::{snippets}/invite-post/http-request.adoc[]
+
+.response
+include::{snippets}/invite-post/http-response.adoc[]
+
+=== List all
+
+.request
+include::{snippets}/invite-get/http-request.adoc[]
+
+.response
+include::{snippets}/invite-get/http-response.adoc[]
+
+=== Delete
+
+.request
+include::{snippets}/invite-delete/http-request.adoc[]
+
+.response
+include::{snippets}/invite-delete/http-response.adoc[]

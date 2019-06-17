@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ public class InviteController {
         Invite createdInvite = inviteRepository.create(invite);
 
         response.setStatus(HttpServletResponse.SC_CREATED);
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
 
         return createdInvite;
     }
@@ -37,9 +39,13 @@ public class InviteController {
 
         Integer affectedRows = inviteRepository.delete(email);
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        if (affectedRows > 0) {
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
 
-        return affectedRows;
+        return null;
     }
 
     @GetMapping(value = "/invite")
