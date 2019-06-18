@@ -1,7 +1,10 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.repositories.OrganizationRepositoryImpl;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -11,10 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.repositories.OrganizationRepositoryImpl;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -27,7 +28,7 @@ public class OrganizationControllerTest extends BaseControllerTest {
         OrganizationRepositoryImpl organizationRepository = mock(OrganizationRepositoryImpl.class);
         when(organizationRepository.findById(ArgumentMatchers.anyLong())).thenReturn(new Organization());
 
-        mvc.perform(get("/organization/1")
+        mvc.perform(get(RestPath.ORGANIZATION_GET_ONE,"1")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }

@@ -1,7 +1,10 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.repositories.WorkorderRepositoryImpl;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -11,10 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.WorkorderRepositoryImpl;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -27,7 +28,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
         WorkorderRepositoryImpl workorderRepository = mock(WorkorderRepositoryImpl.class);
         when(workorderRepository.create(ArgumentMatchers.any())).thenReturn(new Workorder());
 
-        mvc.perform(post("/workorder")
+        mvc.perform(post(RestPath.WORKORDER)
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
         ).andExpect(status().isCreated());

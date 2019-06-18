@@ -1,16 +1,15 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.services.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.services.UserService;
+
 @RestController
-@RequestMapping(value = "/register")
 public class RegistrationController {
     private UserService userService;
 
@@ -18,7 +17,7 @@ public class RegistrationController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "")
+    @PostMapping(value = RestPath.REGISTER)
     public User registerUser(@RequestBody User user, HttpServletResponse response) {
         User createdUser = userService.create(user);
 

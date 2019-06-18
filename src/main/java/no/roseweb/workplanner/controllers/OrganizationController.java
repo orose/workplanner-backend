@@ -17,7 +17,7 @@ public class OrganizationController {
         this.organizationRepository = organizationRepository;
     }
 
-    @GetMapping(value = "/organization/{id}")
+    @GetMapping(value = RestPath.ORGANIZATION_GET_ONE)
     public Organization getOrganization(@PathVariable Long id, HttpServletResponse response) {
         Organization organization = organizationRepository.findById(id);
 

@@ -17,7 +17,7 @@ public class WorkorderController {
         this.workorderRepository = workorderRepository;
     }
 
-    @PostMapping(value = "/workorder")
+    @PostMapping(value = RestPath.WORKORDER)
     public Workorder createWorkorder(@RequestBody Workorder workorder, HttpServletResponse response) {
 
         Workorder createdWorkorder = workorderRepository.create(workorder);

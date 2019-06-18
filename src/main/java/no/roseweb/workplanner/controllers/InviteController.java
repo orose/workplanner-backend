@@ -23,7 +23,7 @@ public class InviteController {
         this.inviteRepository = inviteRepository;
     }
 
-    @PostMapping(value = "/invite")
+    @PostMapping(value = RestPath.INVITE)
     public Invite createInvite(@RequestBody Invite invite, HttpServletResponse response) {
 
         Invite createdInvite = inviteRepository.create(invite);
@@ -34,7 +34,7 @@ public class InviteController {
         return createdInvite;
     }
 
-    @DeleteMapping(value = "/invite")
+    @DeleteMapping(value = RestPath.INVITE)
     public Integer deleteInvite(@RequestParam String email, HttpServletResponse response) {
 
         Integer affectedRows = inviteRepository.delete(email);
@@ -48,7 +48,7 @@ public class InviteController {
         return null;
     }
 
-    @GetMapping(value = "/invite")
+    @GetMapping(value = RestPath.INVITE)
     public List<Invite> findAllByOrganizationId(@RequestParam Long organizationId, HttpServletResponse response) {
 
         List<Invite> invites = inviteRepository.findAllByOrganizationId(organizationId);
