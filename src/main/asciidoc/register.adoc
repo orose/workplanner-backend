@@ -1,0 +1,17 @@
+== Register
+
+=== Register new user
+
+If the newly registered user was invited, the user will automatically be connected
+to the organization that the invitation was sent from.
+
+If the user was not invited, a new organization will be created and the new user will
+be connected to that one.
+
+.request
+include::{snippets}/register-post/http-request.adoc[]
+
+.response
+include::{snippets}/register-post/http-response.adoc[]
+
+

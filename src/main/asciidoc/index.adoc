@@ -2,3 +2,6 @@
 :toc: left
 
 include::invite.adoc[]
+include::organization.adoc[]
+include::register.adoc[]
+include::workorder.adoc[]

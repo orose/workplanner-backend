@@ -1,0 +1,20 @@
+== Workorder
+
+=== Create new
+
+.request
+include::{snippets}/workorder-post/http-request.adoc[]
+
+.response
+include::{snippets}/workorder-post/http-response.adoc[]
+
+
+=== Get one
+
+.request
+include::{snippets}/workorder-get/http-request.adoc[]
+
+.response
+include::{snippets}/workorder-get/http-response.adoc[]
+
+

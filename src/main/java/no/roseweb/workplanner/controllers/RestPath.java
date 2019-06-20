@@ -5,10 +5,11 @@ public final class RestPath {
     public static final String API = "/api";
     public static final String API_V1 = "/api/v1";
 
-    public static final String INVITE = "/invite";
-    public static final String ORGANIZATION_GET_ONE = "/organization/{id}";
-    public static final String REGISTER = "/register";
-    public static final String WORKORDER = "/workorder";
+    static final String INVITE = "/invite";
+    static final String ORGANIZATION_GET_ONE = "/organization/{id}";
+    static final String REGISTER = "/register";
+    static final String WORKORDER = "/workorder";
+    static final String WORKORDER_GET_ONE = "/workorder/{id}";
 
     private RestPath() {
     }

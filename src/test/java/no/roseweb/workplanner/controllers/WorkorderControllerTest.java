@@ -1,10 +1,7 @@
 package no.roseweb.workplanner.controllers;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import no.roseweb.workplanner.models.Workorder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -14,53 +11,70 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.repositories.WorkorderRepositoryImpl;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @AutoConfigureMockMvc
 public class WorkorderControllerTest extends BaseControllerTest {
 
+    @Before
+    public void init() {
+        Workorder workorder = new Workorder();
+        workorder.setId(1L);
+        workorder.setDescription("Description text");
+        workorder.setTitle("workorder title");
+        workorder.setTeamId(1L);
+
+        when(workorderRepository.create(ArgumentMatchers.any())).thenReturn(workorder);
+        when(workorderRepository.findById(ArgumentMatchers.anyLong())).thenReturn(workorder);
+    }
+
     @Test
     @WithMockUser
     public void createNewWorkorder() throws Exception {
-        WorkorderRepositoryImpl workorderRepository = mock(WorkorderRepositoryImpl.class);
-        when(workorderRepository.create(ArgumentMatchers.any())).thenReturn(new Workorder());
-
         mvc.perform(post(RestPath.WORKORDER)
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
-        ).andExpect(status().isCreated());
-    }
-
-    /*
-    @Test
-    @WithMockUser
-    public void getAllInvites() throws Exception {
-        Invite i = new Invite();
-        i.setOrganizationId(1L);
-        i.setEmail("email@email.com");
-        ArrayList<Invite> invites = new ArrayList<>();
-        invites.add(i);
-
-        InviteRepositoryImpl inviteRepository = mock(InviteRepositoryImpl.class);
-        when(inviteRepository.findAllByOrganizationId(ArgumentMatchers.any())).thenReturn(invites);
-
-        mvc.perform(get("/invite?organizationId=1")
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+            .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}"))
+        .andExpect(status().isCreated())
+        .andDo(
+            document("workorder-post",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("id").description(""),
+                    fieldWithPath("description").description(""),
+                    fieldWithPath("title").description(""),
+                    fieldWithPath("teamId").description("")
+                )
+            )
+        );
     }
 
     @Test
     @WithMockUser
-    public void deleteInvite() throws Exception {
-        InviteRepositoryImpl inviteRepository = mock(InviteRepositoryImpl.class);
-        when(inviteRepository.delete(ArgumentMatchers.any())).thenReturn(1);
-
-        mvc.perform(delete("/invite?email=test@email.com")
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+    public void getWorkorder() throws Exception {
+        mvc.perform(get(RestPath.WORKORDER_GET_ONE, "1")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document("workorder-get",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                        fieldWithPath("id").description(""),
+                        fieldWithPath("description").description(""),
+                        fieldWithPath("title").description(""),
+                        fieldWithPath("teamId").description("")
+                )
+            )
+        );
     }
-    */
 }

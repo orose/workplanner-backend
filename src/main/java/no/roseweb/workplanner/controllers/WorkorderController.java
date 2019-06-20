@@ -1,13 +1,14 @@
 package no.roseweb.workplanner.controllers;
 
-import javax.servlet.http.HttpServletResponse;
-
+import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.WorkorderRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.repositories.WorkorderRepository;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class WorkorderController {
@@ -25,5 +26,15 @@ public class WorkorderController {
         response.setStatus(HttpServletResponse.SC_CREATED);
 
         return createdWorkorder;
+    }
+
+    @GetMapping(value = RestPath.WORKORDER_GET_ONE)
+    public Workorder getWorkorder(@PathVariable Long id, HttpServletResponse response) {
+
+        Workorder workorder = workorderRepository.findById(id);
+
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        return workorder;
     }
 }

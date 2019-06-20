@@ -8,13 +8,15 @@ import no.roseweb.workplanner.repositories.OrganizationRepository;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.test.web.servlet.MockMvc;
 
-public class BaseControllerTest {
+@AutoConfigureRestDocs(outputDir = "target/snippets")
+class BaseControllerTest {
     @Autowired
-    protected MockMvc mvc;
+    MockMvc mvc;
 
     @MockBean
     UserDetailsService userDetailsService;

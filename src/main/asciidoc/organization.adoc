@@ -1,0 +1,11 @@
+== Organization
+
+=== Get one
+
+.request
+include::{snippets}/organization-get/http-request.adoc[]
+
+.response
+include::{snippets}/organization-get/http-response.adoc[]
+
+
