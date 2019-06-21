@@ -42,7 +42,7 @@ public class InviteController {
         if (affectedRows > 0) {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } else {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
 
         return null;

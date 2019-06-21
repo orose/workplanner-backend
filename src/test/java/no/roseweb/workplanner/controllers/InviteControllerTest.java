@@ -35,7 +35,8 @@ public class InviteControllerTest extends BaseControllerTest {
 
         when(inviteRepository.create(ArgumentMatchers.any(Invite.class))).thenReturn(invite);
         when(inviteRepository.findAllByOrganizationId(ArgumentMatchers.any())).thenReturn(inviteList);
-        when(inviteRepository.delete(ArgumentMatchers.any())).thenReturn(1);
+        when(inviteRepository.delete("test@email.com")).thenReturn(1);
+        when(inviteRepository.delete("not-found@email.com")).thenReturn(0);
     }
 
     @Test
@@ -84,5 +85,13 @@ public class InviteControllerTest extends BaseControllerTest {
         ).andExpect(
             status().isNoContent())
             .andDo(document("invite-delete"));
+    }
+
+    @Test
+    @WithMockUser
+    public void deleteInviteNotFound() throws Exception {
+        mvc.perform(delete(RestPath.INVITE + "?email=not-found@email.com")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound());
     }
 }
