@@ -12,6 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -49,6 +51,9 @@ public class WorkorderRepositoryTest {
         createdWorkorder.setDescription("Description updated");
         Workorder updatedWorkorder = workorderRepository.update(createdWorkorder);
         assertThat(updatedWorkorder.getDescription()).isEqualTo("Description updated");
+
+        List<Workorder> workorderList = workorderRepository.getAll(10, 0);
+        assertThat(workorderList.size()).isGreaterThan(0);
     }
 
 }
