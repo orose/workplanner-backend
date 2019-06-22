@@ -1,13 +1,12 @@
 package no.roseweb.workplanner.controllers;
 
-import javax.servlet.http.HttpServletResponse;
-
+import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.repositories.OrganizationRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.repositories.OrganizationRepository;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class OrganizationController {
@@ -17,7 +16,7 @@ public class OrganizationController {
         this.organizationRepository = organizationRepository;
     }
 
-    @GetMapping(value = RestPath.ORGANIZATION_GET_ONE)
+    @GetMapping(value = RestPath.ORGANIZATION_ID)
     public Organization getOrganization(@PathVariable Long id, HttpServletResponse response) {
         Organization organization = organizationRepository.findById(id);
 

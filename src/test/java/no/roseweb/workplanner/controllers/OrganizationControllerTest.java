@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +40,7 @@ public class OrganizationControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void getShouldReturnOrganization() throws Exception {
-        mvc.perform(get(RestPath.ORGANIZATION_GET_ONE,"1")
+        mvc.perform(get(RestPath.ORGANIZATION_ID,"1")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
             .andDo(

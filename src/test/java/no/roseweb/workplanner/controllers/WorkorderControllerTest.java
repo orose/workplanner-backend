@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -18,8 +21,11 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -35,16 +41,24 @@ public class WorkorderControllerTest extends BaseControllerTest {
         workorder.setTitle("workorder title");
         workorder.setTeamId(1L);
 
+        List<Workorder> workorderList = new ArrayList<>();
+        workorderList.add(workorder);
+
         when(workorderRepository.create(ArgumentMatchers.any())).thenReturn(workorder);
-        when(workorderRepository.findById(ArgumentMatchers.anyLong())).thenReturn(workorder);
+        when(workorderRepository.findById(1L)).thenReturn(workorder);
+        when(workorderRepository
+            .getAll(ArgumentMatchers.any(),ArgumentMatchers.any()))
+            .thenReturn(workorderList);
+        when(workorderRepository.update(ArgumentMatchers.any())).thenReturn(workorder);
+        when(workorderRepository.countAll()).thenReturn(123);
     }
 
     @Test
     @WithMockUser
     public void createNewWorkorder() throws Exception {
         mvc.perform(post(RestPath.WORKORDER)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}"))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}"))
         .andExpect(status().isCreated())
         .andDo(
             document("workorder-post",
@@ -62,17 +76,74 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void getWorkorder() throws Exception {
-        mvc.perform(get(RestPath.WORKORDER_GET_ONE, "1")
-            .contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get(RestPath.WORKORDER_ID, "1")
+        .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(
             document("workorder-get",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                 responseFields(
-                        fieldWithPath("id").description(""),
-                        fieldWithPath("description").description(""),
-                        fieldWithPath("title").description(""),
-                        fieldWithPath("teamId").description("")
+                    fieldWithPath("id").description(""),
+                    fieldWithPath("description").description(""),
+                    fieldWithPath("title").description(""),
+                    fieldWithPath("teamId").description("")
+                )
+            )
+        );
+    }
+
+    @Test
+    @WithMockUser
+    public void updateWorkorder() throws Exception {
+        mvc.perform(put(RestPath.WORKORDER_ID, "1")
+        .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document("workorder-update",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("id").description(""),
+                    fieldWithPath("description").description(""),
+                    fieldWithPath("title").description(""),
+                    fieldWithPath("teamId").description("")
+                )
+            )
+        );
+    }
+
+    @Test
+    @WithMockUser
+    public void updateWorkorderNotFound() throws Exception {
+        mvc.perform(put(RestPath.WORKORDER_ID, "2")
+        .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser
+    public void workorderList() throws Exception {
+        mvc.perform(get(RestPath.WORKORDER)
+        .param("offset", "0")
+        .param("limit", "1")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(
+            document("workorder-getAll",
+                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                requestParameters(
+                    parameterWithName("offset").description(""),
+                    parameterWithName("limit").description("")
+                ),
+                responseFields(
+                    fieldWithPath("total").description(""),
+                    fieldWithPath("offset").description(""),
+                    fieldWithPath("limit").description(""),
+                    fieldWithPath("data.[].id").description(""),
+                    fieldWithPath("data.[].description").description(""),
+                    fieldWithPath("data.[].title").description(""),
+                    fieldWithPath("data.[].teamId").description("")
                 )
             )
         );

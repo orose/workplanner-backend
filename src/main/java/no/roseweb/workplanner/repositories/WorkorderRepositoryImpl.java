@@ -2,7 +2,7 @@ package no.roseweb.workplanner.repositories;
 
 import no.roseweb.workplanner.models.Workorder;
 import no.roseweb.workplanner.models.rowmappers.WorkorderRowMapper;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -73,7 +73,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         try {
             return (Workorder) namedParameterJdbcTemplate.queryForObject(
                     sql, parameters, new WorkorderRowMapper());
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
             return null;
         }
     }
@@ -100,7 +100,20 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 workorders.add(w);
             }
             return workorders;
-        } catch (EmptyResultDataAccessException e) {
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Integer countAll() {
+        String sql = "select count(*) from workorder";
+
+        try {
+            Integer count = namedParameterJdbcTemplate.
+                    queryForObject(sql, new MapSqlParameterSource(), Integer.class);
+            return count;
+        } catch (DataAccessException e) {
             return null;
         }
     }

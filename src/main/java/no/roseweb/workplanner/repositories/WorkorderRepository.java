@@ -9,4 +9,5 @@ public interface WorkorderRepository {
     Workorder update(Workorder workorder);
     Workorder findById(Long id);
     List<Workorder> getAll(Integer limit, Integer offset);
+    Integer countAll();
 }

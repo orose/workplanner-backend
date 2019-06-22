@@ -18,3 +18,22 @@ include::{snippets}/workorder-get/http-request.adoc[]
 include::{snippets}/workorder-get/http-response.adoc[]
 
 
+=== Get all
+
+.request
+include::{snippets}/workorder-getAll/http-request.adoc[]
+include::{snippets}/workorder-getAll/request-parameters.adoc[]
+
+.response
+include::{snippets}/workorder-getAll/http-response.adoc[]
+
+
+=== Update
+
+.request
+include::{snippets}/workorder-update/http-request.adoc[]
+
+.response
+include::{snippets}/workorder-update/http-response.adoc[]
+
+
