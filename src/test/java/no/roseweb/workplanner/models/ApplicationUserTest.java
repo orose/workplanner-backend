@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserTest {
+public class ApplicationUserTest {
 
     @Test
     public void testGettersAndSetters() {
-        User u = new User();
+        ApplicationUser u = new ApplicationUser();
 
         u.setId(1L);
         u.setEmail("email@example.com");

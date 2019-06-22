@@ -1,7 +1,7 @@
 package no.roseweb.workplanner.repositories;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import no.roseweb.workplanner.models.ApplicationUser;
+import no.roseweb.workplanner.models.Organization;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -16,13 +16,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.User;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJdbcTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-public class UserRepositoryTest {
+public class ApplicationUserRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -42,12 +41,12 @@ public class UserRepositoryTest {
         organization.setOrganizationNumber("1234567890");
         organization = organizationRepository.create(organization);
 
-        User user = new User();
+        ApplicationUser user = new ApplicationUser();
         user.setEmail("test");
         user.setOrganizationId(organization.getId());
         userRepository.create(user);
 
-        User u = userRepository.findByEmail("test");
+        ApplicationUser u = userRepository.findByEmail("test");
         assertThat(u).isNotNull();
         assertThat(u.getOrganizationId()).isGreaterThanOrEqualTo(0L);
         assertThat(u.getId()).isGreaterThanOrEqualTo(0L);

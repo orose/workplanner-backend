@@ -1,16 +1,15 @@
 package no.roseweb.workplanner.models.rowmappers;
 
+import no.roseweb.workplanner.models.ApplicationUser;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.springframework.jdbc.core.RowMapper;
-
-import no.roseweb.workplanner.models.User;
-
-public class UserRowMapper implements RowMapper {
+public class ApplicationUserRowMapper implements RowMapper {
     @Override
     public Object mapRow(ResultSet rs, int i) throws SQLException {
-        User user = new User();
+        ApplicationUser user = new ApplicationUser();
 
         user.setId(rs.getLong("id"));
         user.setEmail(rs.getString("email"));

@@ -1,7 +1,7 @@
 package no.roseweb.workplanner.repositories;
 
-import no.roseweb.workplanner.models.User;
-import no.roseweb.workplanner.models.rowmappers.UserRowMapper;
+import no.roseweb.workplanner.models.ApplicationUser;
+import no.roseweb.workplanner.models.rowmappers.ApplicationUserRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User create(User user) {
+    public ApplicationUser create(ApplicationUser user) {
         NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             new NamedParameterJdbcTemplate(jdbcTemplate);
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -52,19 +52,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public ApplicationUser findByEmail(String email) {
         String sql = "select * from user where email = ?";
 
-        List<User> userList = jdbcTemplate.query(sql, new Object[] {email}, new UserRowMapper());
+        List<ApplicationUser> userList = jdbcTemplate.query(sql, new Object[] {email}, new ApplicationUserRowMapper());
 
         return userList.isEmpty() ? null : userList.get(0);
     }
 
     @Override
-    public User findById(Long id) {
+    public ApplicationUser findById(Long id) {
         String sql = "select * from user where id = ?";
 
-        List<User> userList = jdbcTemplate.query(sql, new Object[] {id}, new UserRowMapper());
+        List<ApplicationUser> userList = jdbcTemplate.query(sql, new Object[] {id}, new ApplicationUserRowMapper());
 
         return userList.isEmpty() ? null : userList.get(0);
     }

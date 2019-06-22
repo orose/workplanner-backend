@@ -1,6 +1,6 @@
 package no.roseweb.workplanner.services;
 
-import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email);
+        ApplicationUser user = userRepository.findByEmail(email);
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         /*

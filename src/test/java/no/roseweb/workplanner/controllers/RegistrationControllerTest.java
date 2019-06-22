@@ -1,6 +1,6 @@
 package no.roseweb.workplanner.controllers;
 
-import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.models.ApplicationUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +27,7 @@ public class RegistrationControllerTest extends BaseControllerTest {
 
     @Before
     public void init() {
-        User user = new User();
+        ApplicationUser user = new ApplicationUser();
         user.setEmail("email@example.com");
         user.setFirstname("firstname");
         user.setLastname("lastname");

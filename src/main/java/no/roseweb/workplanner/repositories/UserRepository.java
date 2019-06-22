@@ -1,9 +1,9 @@
 package no.roseweb.workplanner.repositories;
 
-import no.roseweb.workplanner.models.User;
+import no.roseweb.workplanner.models.ApplicationUser;
 
 public interface UserRepository {
-    User create(User user);
-    User findByEmail(String email);
-    User findById(Long id);
+    ApplicationUser create(ApplicationUser user);
+    ApplicationUser findByEmail(String email);
+    ApplicationUser findById(Long id);
 }

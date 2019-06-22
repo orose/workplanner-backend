@@ -1,7 +1,7 @@
 package no.roseweb.workplanner.repositories;
 
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Team;
-import no.roseweb.workplanner.models.User;
 import no.roseweb.workplanner.models.UserTeam;
 import no.roseweb.workplanner.services.UserServiceImpl;
 import org.junit.Test;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJdbcTest
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-public class UserTeamRepositoryTest {
+public class ApplicationUserTeamRepositoryTest {
 
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -40,13 +40,13 @@ public class UserTeamRepositoryTest {
         InviteRepositoryImpl inviteRepository = new InviteRepositoryImpl(jdbcTemplate);
         TeamRepositoryImpl teamRepository = new TeamRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
 
-        User inputUser = new User();
+        ApplicationUser inputUser = new ApplicationUser();
         inputUser.setEmail("another-user@example.com");
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 
         UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
-        User createdUser = userService.create(inputUser);
+        ApplicationUser createdUser = userService.create(inputUser);
 
         Team t = new Team();
         t.setOrganizationId(createdUser.getOrganizationId());

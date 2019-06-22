@@ -1,9 +1,9 @@
 package no.roseweb.workplanner.services;
 
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Invite;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.Team;
-import no.roseweb.workplanner.models.User;
 import no.roseweb.workplanner.models.UserTeam;
 import no.roseweb.workplanner.repositories.InviteRepository;
 import no.roseweb.workplanner.repositories.OrganizationRepository;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public ApplicationUser create(ApplicationUser user) {
         Invite invite = inviteRepository.findByEmail(user.getEmail());
         Team createdTeam = null;
 
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setOrganizationId(organization.getId());
-        User createdUser = userRepository.create(user);
+        ApplicationUser createdUser = userRepository.create(user);
 
         if (createdTeam != null)  {
             connectToTeam(createdUser.getEmail(), createdTeam.getId(), "ADMIN");
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public ApplicationUser findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 }

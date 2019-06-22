@@ -2,7 +2,7 @@ package no.roseweb.workplanner.models;
 
 import java.util.Set;
 
-public class User {
+public class ApplicationUser {
     private Long id;
     private String email;
     private String firstname;
