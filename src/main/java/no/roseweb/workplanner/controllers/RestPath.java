@@ -7,7 +7,8 @@ public final class RestPath {
 
     static final String INVITE = "/invite";
     static final String ORGANIZATION_ID = "/organization/{id}";
-    static final String REGISTER = "/register";
+    public static final String REGISTER = "/register";
+    public static final String LOGIN = "/login";
     static final String WORKORDER = "/workorder";
     static final String WORKORDER_ID = "/workorder/{id}";
 

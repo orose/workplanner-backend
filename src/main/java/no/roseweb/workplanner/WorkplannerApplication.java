@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
+//@ComponentScan(basePackages = {"no.roseweb.workplanner.security"})
 public class WorkplannerApplication {
 
     @Bean
