@@ -1,4 +1,4 @@
-package no.roseweb.workplanner.auth;
+package no.roseweb.workplanner.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,25 +27,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomAccessDeniedHandler accessDeniedHandler;
 
-    private SimpleUrlAuthenticationFailureHandler myFailureHandler = new SimpleUrlAuthenticationFailureHandler();
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private SimpleUrlAuthenticationFailureHandler myFailureHandler = new SimpleUrlAuthenticationFailureHandler();
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
-            .and()
-            .exceptionHandling()
-            .accessDeniedHandler(accessDeniedHandler)
-            .authenticationEntryPoint(restAuthenticationEntryPoint)
-            .and()
-            .authorizeRequests()
-            .antMatchers("/resources/**", "/register").permitAll()
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedHandler(accessDeniedHandler)
+                    .authenticationEntryPoint(restAuthenticationEntryPoint)
+                .and()
+                .authorizeRequests()
+                    .antMatchers("/resources/**", "/register").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -59,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Bean

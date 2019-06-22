@@ -1,4 +1,4 @@
-package no.roseweb.workplanner.auth;
+package no.roseweb.workplanner.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

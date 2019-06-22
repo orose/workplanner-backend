@@ -1,4 +1,4 @@
-package no.roseweb.workplanner.auth;
+package no.roseweb.workplanner.security;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
