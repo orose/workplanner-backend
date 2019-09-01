@@ -16,16 +16,12 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -56,7 +52,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void createNewWorkorder() throws Exception {
-        mvc.perform(post(RestPath.WORKORDER)
+        mvc.perform(post(RestPath.API + RestPath.WORKORDER)
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}"))
         .andExpect(status().isCreated())
@@ -76,7 +72,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void getWorkorder() throws Exception {
-        mvc.perform(get(RestPath.WORKORDER_ID, "1")
+        mvc.perform(get(RestPath.API + RestPath.WORKORDER_ID, "1")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(
@@ -95,7 +91,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void updateWorkorder() throws Exception {
-        mvc.perform(put(RestPath.WORKORDER_ID, "1")
+        mvc.perform(put(RestPath.API + RestPath.WORKORDER_ID, "1")
         .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -124,7 +120,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void workorderList() throws Exception {
-        mvc.perform(get(RestPath.WORKORDER)
+        mvc.perform(get(RestPath.API + RestPath.WORKORDER)
         .param("offset", "0")
         .param("limit", "1")
         .contentType(MediaType.APPLICATION_JSON))

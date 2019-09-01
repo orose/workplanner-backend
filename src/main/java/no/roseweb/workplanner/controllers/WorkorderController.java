@@ -3,13 +3,7 @@ package no.roseweb.workplanner.controllers;
 import no.roseweb.workplanner.models.Workorder;
 import no.roseweb.workplanner.models.WorkorderListResponse;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,7 +15,7 @@ public class WorkorderController {
         this.workorderRepository = workorderRepository;
     }
 
-    @PostMapping(value = RestPath.WORKORDER)
+    @PostMapping(value = RestPath.API + RestPath.WORKORDER)
     public Workorder createWorkorder(@RequestBody Workorder workorder, HttpServletResponse response) {
 
         Workorder createdWorkorder = workorderRepository.create(workorder);
@@ -31,7 +25,7 @@ public class WorkorderController {
         return createdWorkorder;
     }
 
-    @GetMapping(value = RestPath.WORKORDER)
+    @GetMapping(value = RestPath.API + RestPath.WORKORDER)
     public WorkorderListResponse getWorkorderList(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset,
@@ -48,7 +42,7 @@ public class WorkorderController {
         return result;
     }
 
-    @GetMapping(value = RestPath.WORKORDER_ID)
+    @GetMapping(value = RestPath.API + RestPath.WORKORDER_ID)
     public Workorder getWorkorder(@PathVariable Long id, HttpServletResponse response) {
 
         Workorder workorder = workorderRepository.findById(id);
@@ -58,7 +52,7 @@ public class WorkorderController {
         return workorder;
     }
 
-    @PutMapping(value = RestPath.WORKORDER_ID)
+    @PutMapping(value = RestPath.API + RestPath.WORKORDER_ID)
     public Workorder updateWorkorder(
             @PathVariable Long id,
             @RequestBody Workorder workorder, HttpServletResponse response
