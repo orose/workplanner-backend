@@ -1,0 +1,13 @@
+== Userinfo
+
+=== Get userinfo
+
+Get information about the logged in user.
+
+.request
+include::{snippets}/userinfo-get/http-request.adoc[]
+
+.response
+include::{snippets}/userinfo-get/http-response.adoc[]
+
+

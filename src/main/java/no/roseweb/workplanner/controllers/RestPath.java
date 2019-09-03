@@ -5,6 +5,7 @@ public final class RestPath {
     public static final String API = "/api";
     public static final String API_V1 = "/api/v1";
 
+    static final String USERINFO = "/userinfo";
     static final String INVITE = "/invite";
     static final String ORGANIZATION_ID = "/organization/{id}";
     public static final String REGISTER = "/register";
