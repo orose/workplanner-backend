@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
     }
 
     @Override
+    @PreAuthorize("hasPermission(#workorder, 'edit')")
     public Workorder update(Workorder workorder) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "update workorder set "

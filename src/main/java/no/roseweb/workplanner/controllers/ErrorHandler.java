@@ -1,9 +1,5 @@
 package no.roseweb.workplanner.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -11,12 +7,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @ControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
@@ -48,6 +49,11 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         return handleException(e, request, HttpStatus.INTERNAL_SERVER_ERROR, true);
     }
 
+    @ExceptionHandler({ AccessDeniedException.class })
+    protected ResponseEntity<Object> handleAccessDenied(RuntimeException e, WebRequest request) {
+        return handleException(e, request, HttpStatus.FORBIDDEN, false);
+    }
+
     @ExceptionHandler({ RuntimeException.class })
     protected ResponseEntity<Object> handleGenericError(RuntimeException e, WebRequest request) {
         return handleException(e, request, HttpStatus.INTERNAL_SERVER_ERROR, true);
@@ -59,9 +65,11 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         final String feilId = UUID.randomUUID().toString();
         if (warning) {
-            LOG.warn("Exception Occured. Feilid={} Sending status={}", feilId, httpStatus.value(), e);
+            LOG.warn("Exception Occured. Feilid={} Sending status={} Message={}",
+                feilId, httpStatus.value(), e.getMessage());
         } else {
-            LOG.info("Exception Occured. Feilid={} Sending status={}", feilId, httpStatus.value(), e);
+            LOG.info("Exception Occured. Feilid={} Sending status={} Message={}",
+                feilId, httpStatus.value(), e.getMessage());
         }
 
         Map<String, Object> error = new HashMap<>();
