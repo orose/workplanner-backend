@@ -63,7 +63,8 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("id").description(""),
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description("")
+                    fieldWithPath("teamId").description(""),
+                    fieldWithPath("organizationId").description("")
                 )
             )
         );
@@ -82,7 +83,8 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("id").description(""),
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description("")
+                    fieldWithPath("teamId").description(""),
+                    fieldWithPath("organizationId").description("")
                 )
             )
         );
@@ -92,7 +94,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @WithMockUser
     public void updateWorkorder() throws Exception {
         mvc.perform(put(RestPath.API + RestPath.WORKORDER_ID, "1")
-        .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
+        .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1,\"organizationId\":1}")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(
@@ -102,7 +104,8 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("id").description(""),
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description("")
+                    fieldWithPath("teamId").description(""),
+                    fieldWithPath("organizationId").description("")
                 )
             )
         );
@@ -139,7 +142,8 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("data.[].id").description(""),
                     fieldWithPath("data.[].description").description(""),
                     fieldWithPath("data.[].title").description(""),
-                    fieldWithPath("data.[].teamId").description("")
+                    fieldWithPath("data.[].teamId").description(""),
+                    fieldWithPath("data.[].organizationId").description("")
                 )
             )
         );

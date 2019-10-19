@@ -45,6 +45,7 @@ public class WorkorderRepositoryTest {
         wo.setTitle("Title");
         wo.setDescription("Description");
         wo.setTeamId(createdTeam.getId());
+        wo.setOrganizationId(createdOrganization.getId());
         Workorder createdWorkorder = workorderRepository.create(wo);
         assertThat(createdWorkorder.getId()).isNotNull();
 

@@ -30,14 +30,16 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         String sql = "insert into workorder ("
                 + "title,"
                 + "description, "
-                + "team_id "
+                + "team_id, "
+                + "organization_id "
                 + ") values ("
-                + ":title, :description, :team_id)";
+                + ":title, :description, :team_id, :organization_id)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", workorder.getTitle())
                 .addValue("description", workorder.getDescription())
-                .addValue("team_id", workorder.getTeamId());
+                .addValue("team_id", workorder.getTeamId())
+                .addValue("organization_id", workorder.getOrganizationId());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
 
@@ -51,13 +53,15 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         String sql = "update workorder set "
                 + "title = :title,"
                 + "description = :description, "
-                + "team_id = :team_id "
+                + "team_id = :team_id, "
+                + "organization_id = :organization_id "
                 + "where id = :id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", workorder.getTitle())
                 .addValue("description", workorder.getDescription())
                 .addValue("team_id", workorder.getTeamId())
+                .addValue("organization_id", workorder.getOrganizationId())
                 .addValue("id", workorder.getId());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
@@ -96,6 +100,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 Workorder w = new Workorder();
                 w.setId(new Long((Integer) row.get("id")));
                 w.setTeamId(new Long((Integer) row.get("team_id")));
+                w.setOrganizationId(new Long((Integer) row.get("organization_id")));
                 w.setTitle((String) row.get("title"));
                 w.setDescription((String) row.get("description"));
 

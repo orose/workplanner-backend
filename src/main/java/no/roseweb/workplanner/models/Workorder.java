@@ -5,6 +5,7 @@ public class Workorder {
     private String title;
     private String description;
     private Long teamId;
+    private Long organizationId;
 
     public Long getId() {
         return id;
@@ -36,5 +37,13 @@ public class Workorder {
 
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
+    }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
     }
 }
