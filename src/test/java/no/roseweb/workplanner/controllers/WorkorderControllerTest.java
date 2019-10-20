@@ -1,5 +1,6 @@
 package no.roseweb.workplanner.controllers;
 
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +17,16 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -40,13 +45,21 @@ public class WorkorderControllerTest extends BaseControllerTest {
         List<Workorder> workorderList = new ArrayList<>();
         workorderList.add(workorder);
 
-        when(workorderRepository.create(ArgumentMatchers.any())).thenReturn(workorder);
+        ApplicationUser user = new ApplicationUser();
+        user.setEmail("test@example.com");
+        user.setOrganizationId(2L);
+        user.setId(1L);
+        user.setLastname("Lastname");
+        user.setFirstname("Firstname");
+
+        when(workorderRepository.create(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
         when(workorderRepository.findById(1L)).thenReturn(workorder);
         when(workorderRepository
             .getAll(ArgumentMatchers.any(),ArgumentMatchers.any()))
             .thenReturn(workorderList);
         when(workorderRepository.update(ArgumentMatchers.any())).thenReturn(workorder);
         when(workorderRepository.countAll()).thenReturn(123);
+        when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
     }
 
     @Test

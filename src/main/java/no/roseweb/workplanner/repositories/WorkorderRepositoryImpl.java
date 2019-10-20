@@ -1,6 +1,8 @@
 package no.roseweb.workplanner.repositories;
 
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import no.roseweb.workplanner.models.rowmappers.WorkorderRowMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,21 +27,19 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
     }
 
     @Override
-    public Workorder create(Workorder workorder) {
+    public Workorder create(WorkorderCreateRequest request, ApplicationUser user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into workorder ("
                 + "title,"
                 + "description, "
-                + "team_id, "
                 + "organization_id "
                 + ") values ("
-                + ":title, :description, :team_id, :organization_id)";
+                + ":title, :description, :organization_id)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("title", workorder.getTitle())
-                .addValue("description", workorder.getDescription())
-                .addValue("team_id", workorder.getTeamId())
-                .addValue("organization_id", workorder.getOrganizationId());
+                .addValue("title", request.getTitle())
+                .addValue("description", request.getDescription())
+                .addValue("organization_id", user.getOrganizationId());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
 
@@ -99,7 +99,9 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
             for (Map row : rows) {
                 Workorder w = new Workorder();
                 w.setId(new Long((Integer) row.get("id")));
-                w.setTeamId(new Long((Integer) row.get("team_id")));
+                if (row.get("team_id") != null) {
+                    w.setTeamId(new Long((Integer) row.get("team_id")));
+                }
                 w.setOrganizationId(new Long((Integer) row.get("organization_id")));
                 w.setTitle((String) row.get("title"));
                 w.setDescription((String) row.get("description"));

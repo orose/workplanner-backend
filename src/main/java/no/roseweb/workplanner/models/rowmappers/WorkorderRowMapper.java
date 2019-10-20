@@ -14,7 +14,7 @@ public class WorkorderRowMapper implements RowMapper {
         workorder.setId(rs.getLong("id"));
         workorder.setTitle(rs.getString("title"));
         workorder.setDescription(rs.getString("description"));
-        workorder.setTeamId(rs.getLong("team_id"));
+        workorder.setTeamId((Long) rs.getObject("team_id"));
         workorder.setOrganizationId(rs.getLong("organization_id"));
 
         return workorder;

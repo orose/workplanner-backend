@@ -1,8 +1,10 @@
 package no.roseweb.workplanner.repositories;
 
+import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.Team;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,10 @@ public class WorkorderRepositoryTest {
         OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(namedParameterJdbcTemplate);
         WorkorderRepository workorderRepository = new WorkorderRepositoryImpl(namedParameterJdbcTemplate);
         TeamRepository teamRepository = new TeamRepositoryImpl(namedParameterJdbcTemplate);
+        ApplicationUser user = new ApplicationUser();
+        user.setId(1L);
+        user.setOrganizationId(2L);
+        user.setEmail("test@example.com");
 
         Organization organization = new Organization();
         organization.setEmail("test@example.com");
@@ -41,12 +47,10 @@ public class WorkorderRepositoryTest {
         team.setOrganizationId(createdOrganization.getId());
         Team createdTeam = teamRepository.create(team);
 
-        Workorder wo = new Workorder();
+        WorkorderCreateRequest wo = new WorkorderCreateRequest();
         wo.setTitle("Title");
         wo.setDescription("Description");
-        wo.setTeamId(createdTeam.getId());
-        wo.setOrganizationId(createdOrganization.getId());
-        Workorder createdWorkorder = workorderRepository.create(wo);
+        Workorder createdWorkorder = workorderRepository.create(wo, user);
         assertThat(createdWorkorder.getId()).isNotNull();
 
         createdWorkorder.setDescription("Description updated");
