@@ -54,7 +54,7 @@ public class WorkorderRepositoryTest {
         assertThat(createdWorkorder.getId()).isNotNull();
 
         createdWorkorder.setDescription("Description updated");
-        Workorder updatedWorkorder = workorderRepository.update(createdWorkorder);
+        Workorder updatedWorkorder = workorderRepository.update(createdWorkorder, user);
         assertThat(updatedWorkorder.getDescription()).isEqualTo("Description updated");
 
         List<Workorder> workorderList = workorderRepository.getAll(10, 0);

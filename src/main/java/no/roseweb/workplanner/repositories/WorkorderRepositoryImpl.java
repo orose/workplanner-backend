@@ -53,15 +53,16 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
 
     @Override
     @PreAuthorize("hasPermission(#workorder, 'edit')")
-    public Workorder update(Workorder workorder) {
+    public Workorder update(Workorder workorder, ApplicationUser user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "update workorder set "
                 + "title = :title,"
                 + "description = :description, "
                 + "team_id = :team_id, "
                 + "organization_id = :organization_id, "
-                + "updated_at = :now "
-                + "where id = :id";
+                + "updated_at = :now, "
+                + "updated_by = :user_id "
+            + "where id = :id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", workorder.getTitle())
@@ -69,6 +70,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 .addValue("team_id", workorder.getTeamId())
                 .addValue("organization_id", workorder.getOrganizationId())
                 .addValue("id", workorder.getId())
+                .addValue("user_id", user.getId())
                 .addValue("now", LocalDateTime.now());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);

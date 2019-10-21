@@ -57,7 +57,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
         when(workorderRepository
             .getAll(ArgumentMatchers.any(),ArgumentMatchers.any()))
             .thenReturn(workorderList);
-        when(workorderRepository.update(ArgumentMatchers.any())).thenReturn(workorder);
+        when(workorderRepository.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
         when(workorderRepository.countAll()).thenReturn(123);
         when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
     }

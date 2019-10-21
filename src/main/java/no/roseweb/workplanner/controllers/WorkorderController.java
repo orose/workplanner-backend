@@ -80,7 +80,7 @@ public class WorkorderController {
         }
 
         workorder.setId(id);
-        Workorder updatedWorkorder = workorderRepository.update(workorder);
+        Workorder updatedWorkorder = workorderRepository.update(workorder, this.getCurrentUser());
 
         response.setStatus(HttpServletResponse.SC_OK);
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface WorkorderRepository {
     Workorder create(WorkorderCreateRequest request, ApplicationUser user);
-    Workorder update(Workorder workorder);
+    Workorder update(Workorder workorder, ApplicationUser user);
     Workorder findById(Long id);
     List<Workorder> getAll(Integer limit, Integer offset);
     Integer countAll();
