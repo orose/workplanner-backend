@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,14 +33,18 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         String sql = "insert into workorder ("
                 + "title,"
                 + "description, "
-                + "organization_id "
+                + "organization_id, "
+                + "created_by, "
+                + "created_at "
                 + ") values ("
-                + ":title, :description, :organization_id)";
+                + ":title, :description, :organization_id, :user_id, :now)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", request.getTitle())
                 .addValue("description", request.getDescription())
-                .addValue("organization_id", user.getOrganizationId());
+                .addValue("organization_id", user.getOrganizationId())
+                .addValue("user_id", user.getId())
+                .addValue("now", LocalDateTime.now());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
 
@@ -54,7 +59,8 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 + "title = :title,"
                 + "description = :description, "
                 + "team_id = :team_id, "
-                + "organization_id = :organization_id "
+                + "organization_id = :organization_id, "
+                + "updated_at = :now "
                 + "where id = :id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
@@ -62,7 +68,8 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 .addValue("description", workorder.getDescription())
                 .addValue("team_id", workorder.getTeamId())
                 .addValue("organization_id", workorder.getOrganizationId())
-                .addValue("id", workorder.getId());
+                .addValue("id", workorder.getId())
+                .addValue("now", LocalDateTime.now());
 
         namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
 
