@@ -35,9 +35,10 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 + "description, "
                 + "organization_id, "
                 + "created_by, "
+                + "updated_at, "
                 + "created_at "
                 + ") values ("
-                + ":title, :description, :organization_id, :user_id, :now)";
+                + ":title, :description, :organization_id, :user_id, :now, :now)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", request.getTitle())
@@ -59,8 +60,6 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 + "title = :title,"
                 + "description = :description, "
                 + "team_id = :team_id, "
-                + "organization_id = :organization_id, "
-                + "updated_at = :now, "
                 + "updated_by = :user_id "
             + "where id = :id";
 

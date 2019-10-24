@@ -2,6 +2,7 @@ package no.roseweb.workplanner.authorization;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
@@ -13,9 +14,11 @@ import java.io.Serializable;
 public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
     private UserService userService;
+    private WorkorderRepository workorderRepository;
 
-    public PermissionEvaluatorImpl(UserService userService) {
+    public PermissionEvaluatorImpl(UserService userService, WorkorderRepository workorderRepository) {
         this.userService = userService;
+        this.workorderRepository = workorderRepository;
     }
 
     @Override
@@ -28,8 +31,9 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
 
         if (targetDomainObject instanceof Workorder) {
             if (permission.equals("edit")) {
-                Workorder workorder = (Workorder) targetDomainObject;
-                return workorder.getTeamId().equals(user.getOrganizationId());
+                Workorder object = (Workorder) targetDomainObject;
+                Workorder workorder = workorderRepository.findById(object.getId());
+                return user.getOrganizationId().equals(workorder.getOrganizationId());
             }
         }
         return false;

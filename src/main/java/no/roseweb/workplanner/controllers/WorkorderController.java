@@ -71,16 +71,16 @@ public class WorkorderController {
     @PutMapping(value = RestPath.API + RestPath.WORKORDER_ID)
     public Workorder updateWorkorder(
             @PathVariable Long id,
-            @RequestBody Workorder workorder, HttpServletResponse response
+            @RequestBody Workorder body, HttpServletResponse response
     ) {
-
-        if (workorderRepository.findById(id) == null) {
+        Workorder workorder = workorderRepository.findById(id);
+        if (workorder == null) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
 
-        workorder.setId(id);
-        Workorder updatedWorkorder = workorderRepository.update(workorder, this.getCurrentUser());
+        body.setId(id);
+        Workorder updatedWorkorder = workorderRepository.update(body, this.getCurrentUser());
 
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -89,9 +89,12 @@ public class WorkorderController {
 
     private ApplicationUser getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
 
-        ApplicationUser applicationUser = userService.findByEmail(user.getUsername());
-        return applicationUser;
+        try {
+            return userService.findByEmail((String) auth.getPrincipal());
+        } catch (ClassCastException e) {
+            User u = (User) auth.getPrincipal();
+            return userService.findByEmail(u.getUsername());
+        }
     }
 }

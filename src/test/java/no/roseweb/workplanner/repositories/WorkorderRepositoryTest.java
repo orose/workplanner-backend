@@ -52,10 +52,15 @@ public class WorkorderRepositoryTest {
         wo.setDescription("Description");
         Workorder createdWorkorder = workorderRepository.create(wo, user);
         assertThat(createdWorkorder.getId()).isNotNull();
+        assertThat(createdWorkorder.getTeamId()).isNull();
 
         createdWorkorder.setDescription("Description updated");
+        createdWorkorder.setTitle("Title updated");
+        createdWorkorder.setTeamId(createdTeam.getId());
         Workorder updatedWorkorder = workorderRepository.update(createdWorkorder, user);
         assertThat(updatedWorkorder.getDescription()).isEqualTo("Description updated");
+        assertThat(updatedWorkorder.getTitle()).isEqualTo("Title updated");
+        assertThat(updatedWorkorder.getTeamId()).isNotNull();
 
         List<Workorder> workorderList = workorderRepository.getAll(10, 0);
         assertThat(workorderList.size()).isGreaterThan(0);
