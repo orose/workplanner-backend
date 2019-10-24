@@ -11,13 +11,12 @@ import org.springframework.stereotype.Component;
 import java.io.Serializable;
 
 @Component
-public class PermissionEvaluatorImpl implements PermissionEvaluator {
+public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements PermissionEvaluator {
 
-    private UserService userService;
     private WorkorderRepository workorderRepository;
 
     public PermissionEvaluatorImpl(UserService userService, WorkorderRepository workorderRepository) {
-        this.userService = userService;
+        super(userService);
         this.workorderRepository = workorderRepository;
     }
 
@@ -42,13 +41,5 @@ public class PermissionEvaluatorImpl implements PermissionEvaluator {
     @Override
     public boolean hasPermission(Authentication authentication, Serializable serializable, String s, Object o) {
         throw new UnsupportedOperationException("hasPermission() by ID is not supported");
-    }
-
-    private ApplicationUser getUserFromAuth(Authentication auth) {
-        if (auth == null || auth.getPrincipal() == null) {
-            return null;
-        }
-        String username = (String) auth.getPrincipal();
-        return userService.findByEmail(username);
     }
 }
