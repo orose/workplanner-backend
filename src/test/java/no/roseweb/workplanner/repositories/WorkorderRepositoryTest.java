@@ -4,6 +4,7 @@ import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.Team;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.WorkorderStatus;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,7 @@ public class WorkorderRepositoryTest {
         Workorder createdWorkorder = workorderRepository.create(wo, user);
         assertThat(createdWorkorder.getId()).isNotNull();
         assertThat(createdWorkorder.getTeamId()).isNull();
+        assertThat(createdWorkorder.getStatus()).isEqualByComparingTo(WorkorderStatus.NEW);
 
         createdWorkorder.setDescription("Description updated");
         createdWorkorder.setTitle("Title updated");

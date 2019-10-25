@@ -13,9 +13,11 @@ public class WorkorderTest {
         w.setTitle("Title");
         w.setDescription("Description");
         w.setTeamId(1L);
+        w.setStatus(WorkorderStatus.NEW);
 
         assertEquals("Title", w.getTitle());
         assertEquals("Description", w.getDescription());
+        assertEquals(WorkorderStatus.NEW, w.getStatus());
         assertEquals(new Long(1), w.getTeamId());
     }
 }

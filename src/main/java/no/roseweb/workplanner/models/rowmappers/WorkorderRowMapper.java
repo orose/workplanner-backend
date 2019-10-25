@@ -1,6 +1,7 @@
 package no.roseweb.workplanner.models.rowmappers;
 
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.WorkorderStatus;
 import no.roseweb.workplanner.utils.RepositoryUtils;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -17,6 +18,7 @@ public class WorkorderRowMapper implements RowMapper {
         workorder.setDescription(rs.getString("description"));
         workorder.setTeamId(RepositoryUtils.getLong(rs, "team_id"));
         workorder.setOrganizationId(RepositoryUtils.getLong(rs, "organization_id"));
+        workorder.setStatus(WorkorderStatus.valueOf(rs.getString("status")));
 
         return workorder;
     }

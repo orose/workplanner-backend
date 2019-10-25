@@ -2,6 +2,7 @@ package no.roseweb.workplanner.repositories;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.WorkorderStatus;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import no.roseweb.workplanner.models.rowmappers.WorkorderRowMapper;
 import org.springframework.dao.DataAccessException;
@@ -33,16 +34,18 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         String sql = "insert into workorder ("
                 + "title,"
                 + "description, "
+                + "status, "
                 + "organization_id, "
                 + "created_by, "
                 + "updated_at, "
                 + "created_at "
                 + ") values ("
-                + ":title, :description, :organization_id, :user_id, :now, :now)";
+                + ":title, :description, :status, :organization_id, :user_id, :now, :now)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", request.getTitle())
                 .addValue("description", request.getDescription())
+                .addValue("status", WorkorderStatus.NEW.name())
                 .addValue("organization_id", user.getOrganizationId())
                 .addValue("user_id", user.getId())
                 .addValue("now", LocalDateTime.now());

@@ -77,6 +77,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
                     fieldWithPath("teamId").description(""),
+                    fieldWithPath("status").description(""),
                     fieldWithPath("organizationId").description("")
                 )
             )
@@ -97,6 +98,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
                     fieldWithPath("teamId").description(""),
+                    fieldWithPath("status").description(""),
                     fieldWithPath("organizationId").description("")
                 )
             )
@@ -118,6 +120,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("description").description(""),
                     fieldWithPath("title").description(""),
                     fieldWithPath("teamId").description(""),
+                    fieldWithPath("status").description(""),
                     fieldWithPath("organizationId").description("")
                 )
             )
@@ -156,6 +159,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
                     fieldWithPath("data.[].description").description(""),
                     fieldWithPath("data.[].title").description(""),
                     fieldWithPath("data.[].teamId").description(""),
+                    fieldWithPath("data.[].status").description(""),
                     fieldWithPath("data.[].organizationId").description("")
                 )
             )
