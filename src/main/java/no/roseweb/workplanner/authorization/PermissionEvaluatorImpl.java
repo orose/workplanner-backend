@@ -14,6 +14,10 @@ import java.io.Serializable;
 public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements PermissionEvaluator {
 
     private WorkorderRepository workorderRepository;
+    private static String PERMISSION_EDIT = "edit";
+    private static String PERMISSION_READ = "read";
+
+    private static String WORKORDER = "Workorder";
 
     public PermissionEvaluatorImpl(UserService userService, WorkorderRepository workorderRepository) {
         super(userService);
@@ -29,7 +33,7 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
         }
 
         if (targetDomainObject instanceof Workorder) {
-            if (permission.equals("edit")) {
+            if (permission.equals(PERMISSION_EDIT) || permission.equals(PERMISSION_READ)) {
                 Workorder object = (Workorder) targetDomainObject;
                 Workorder workorder = workorderRepository.findById(object.getId());
                 return user.getOrganizationId().equals(workorder.getOrganizationId());
@@ -39,7 +43,19 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Serializable serializable, String s, Object o) {
-        throw new UnsupportedOperationException("hasPermission() by ID is not supported");
+    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permission) {
+        ApplicationUser user = getUserFromAuth(auth);
+
+        if (PERMISSION_READ.equals(permission)) {
+            if (WORKORDER.equals(targetType)) {
+                return evaluateWorkorderRead(user, (Long)targetId);
+            }
+        }
+        return false;
+    }
+
+    private Boolean evaluateWorkorderRead(ApplicationUser user, Long id) {
+        Workorder workorder = workorderRepository.findById(id);
+        return user.getOrganizationId().equals(workorder.getOrganizationId());
     }
 }

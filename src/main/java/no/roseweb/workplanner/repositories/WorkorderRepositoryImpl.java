@@ -1,5 +1,6 @@
 package no.roseweb.workplanner.repositories;
 
+import no.roseweb.workplanner.exceptions.EntityNotFoundException;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
 import no.roseweb.workplanner.models.WorkorderStatus;
@@ -11,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -56,7 +56,6 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
     }
 
     @Override
-    @PreAuthorize("hasPermission(#workorder, 'edit')")
     public Workorder update(Workorder workorder, ApplicationUser user) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "update workorder set "
@@ -87,11 +86,12 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
 
-        try {
-            return (Workorder) namedParameterJdbcTemplate.queryForObject(
-                    sql, parameters, new WorkorderRowMapper());
-        } catch (DataAccessException e) {
-            return null;
+        List result = namedParameterJdbcTemplate.query(
+                sql, parameters, new WorkorderRowMapper());
+        if (result.isEmpty()) {
+            throw new EntityNotFoundException(Workorder.class.getSimpleName(), id);
+        } else {
+            return (Workorder) result.get(0);
         }
     }
 

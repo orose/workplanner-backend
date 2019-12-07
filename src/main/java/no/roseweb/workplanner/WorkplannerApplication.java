@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = {"no.roseweb.workplanner.security"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WorkplannerApplication {
 

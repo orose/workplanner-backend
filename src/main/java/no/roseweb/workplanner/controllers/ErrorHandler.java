@@ -1,5 +1,6 @@
 package no.roseweb.workplanner.controllers;
 
+import no.roseweb.workplanner.exceptions.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -35,6 +36,14 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpServerErrorException(HttpServerErrorException e,
         WebRequest request) {
         return handleException(e, request, HttpStatus.INTERNAL_SERVER_ERROR, true);
+    }
+
+    @ExceptionHandler({ EntityNotFoundException.class })
+    protected ResponseEntity<Object> handleEntityNotFoundException(
+            EntityNotFoundException e,
+            WebRequest request
+    ) {
+        return handleException(e, request, HttpStatus.NOT_FOUND, false);
     }
 
     @ExceptionHandler({ HttpClientErrorException.class })

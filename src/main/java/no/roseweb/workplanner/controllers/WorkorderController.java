@@ -4,8 +4,8 @@ import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
 import no.roseweb.workplanner.models.WorkorderListResponse;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
-import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
+import no.roseweb.workplanner.services.WorkorderService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -21,20 +21,20 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class WorkorderController {
-    private final WorkorderRepository workorderRepository;
+    private final WorkorderService workorderService;
     private final UserService userService;
 
     WorkorderController(
-        WorkorderRepository workorderRepository,
+        WorkorderService workorderService,
         UserService userService
     ) {
-        this.workorderRepository = workorderRepository;
+        this.workorderService = workorderService;
         this.userService = userService;
     }
 
     @PostMapping(value = RestPath.API + RestPath.WORKORDER)
     public Workorder createWorkorder(@RequestBody WorkorderCreateRequest request, HttpServletResponse response) {
-        Workorder createdWorkorder = workorderRepository.create(request, this.getCurrentUser());
+        Workorder createdWorkorder = workorderService.create(request, this.getCurrentUser());
 
         response.setStatus(HttpServletResponse.SC_CREATED);
 
@@ -50,8 +50,8 @@ public class WorkorderController {
         WorkorderListResponse result = new WorkorderListResponse();
         result.setLimit(limit);
         result.setOffset(offset);
-        result.setTotal(workorderRepository.countAll());
-        result.setData(workorderRepository.getAll(limit, offset));
+        result.setTotal(workorderService.countAll());
+        result.setData(workorderService.getAll(limit, offset));
 
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -61,7 +61,7 @@ public class WorkorderController {
     @GetMapping(value = RestPath.API + RestPath.WORKORDER_ID)
     public Workorder getWorkorder(@PathVariable Long id, HttpServletResponse response) {
 
-        Workorder workorder = workorderRepository.findById(id);
+        Workorder workorder = workorderService.findById(id);
 
         response.setStatus(HttpServletResponse.SC_OK);
 
@@ -73,14 +73,8 @@ public class WorkorderController {
             @PathVariable Long id,
             @RequestBody Workorder body, HttpServletResponse response
     ) {
-        Workorder workorder = workorderRepository.findById(id);
-        if (workorder == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-
         body.setId(id);
-        Workorder updatedWorkorder = workorderRepository.update(body, this.getCurrentUser());
+        Workorder updatedWorkorder = workorderService.update(body, this.getCurrentUser());
 
         response.setStatus(HttpServletResponse.SC_OK);
 
