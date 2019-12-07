@@ -52,13 +52,13 @@ public class WorkorderControllerTest extends BaseControllerTest {
         user.setLastname("Lastname");
         user.setFirstname("Firstname");
 
-        when(workorderRepository.create(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
-        when(workorderRepository.findById(1L)).thenReturn(workorder);
-        when(workorderRepository
+        when(workorderService.create(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
+        when(workorderService.findById(1L)).thenReturn(workorder);
+        when(workorderService
             .getAll(ArgumentMatchers.any(),ArgumentMatchers.any()))
             .thenReturn(workorderList);
-        when(workorderRepository.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
-        when(workorderRepository.countAll()).thenReturn(123);
+        when(workorderService.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
+        when(workorderService.countAll()).thenReturn(123);
         when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
     }
 
