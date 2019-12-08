@@ -14,10 +14,10 @@ import java.io.Serializable;
 public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements PermissionEvaluator {
 
     private WorkorderRepository workorderRepository;
-    private static String PERMISSION_EDIT = "edit";
-    private static String PERMISSION_READ = "read";
+    private static final String PERMISSION_EDIT = "edit";
+    private static final String PERMISSION_READ = "read";
 
-    private static String WORKORDER = "Workorder";
+    private static final String WORKORDER = "Workorder";
 
     public PermissionEvaluatorImpl(UserService userService, WorkorderRepository workorderRepository) {
         super(userService);
@@ -48,7 +48,7 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
 
         if (PERMISSION_READ.equals(permission)) {
             if (WORKORDER.equals(targetType)) {
-                return evaluateWorkorderRead(user, (Long)targetId);
+                return evaluateWorkorderRead(user, (Long) targetId);
             }
         }
         return false;
