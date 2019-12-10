@@ -55,6 +55,9 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
     }
 
     private Boolean evaluateWorkorderRead(ApplicationUser user, Long id) {
+        if (user == null) {
+            return false;
+        }
         Workorder workorder = workorderRepository.findById(id);
         return user.getOrganizationId().equals(workorder.getOrganizationId());
     }

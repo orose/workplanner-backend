@@ -3,6 +3,7 @@ package no.roseweb.workplanner.authorization;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.services.UserService;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,7 +19,12 @@ public class PermissionEvaluatorBase {
         if (auth == null || auth.getPrincipal() == null) {
             return null;
         }
-        String username = (String) auth.getPrincipal();
+        String username;
+        if (auth.getPrincipal() instanceof User) {
+            username = ((User) auth.getPrincipal()).getUsername();
+        } else {
+            username = (String) auth.getPrincipal();
+        }
         return userService.findByEmail(username);
     }
 }

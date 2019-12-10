@@ -39,6 +39,6 @@ public class WorkorderServiceImpl implements WorkorderService {
 
     @Override
     public Integer countAll() {
-        return null;
+        return workorderRepository.countAll();
     }
 }
