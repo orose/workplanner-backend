@@ -42,11 +42,18 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 + ") values ("
                 + ":title, :description, :status, :organization_id, :user_id, :now, :now)";
 
+        Workorder w = new Workorder();
+        w.setTitle(request.getTitle());
+        w.setDescription(request.getDescription());
+        w.setOrganizationId(user.getOrganizationId());
+        w.setStatus(WorkorderStatus.NEW);
+        w.validate();
+
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("title", request.getTitle())
-                .addValue("description", request.getDescription())
-                .addValue("status", WorkorderStatus.NEW.name())
-                .addValue("organization_id", user.getOrganizationId())
+                .addValue("title", w.getTitle())
+                .addValue("description", w.getDescription())
+                .addValue("status", w.getStatus().name())
+                .addValue("organization_id", w.getOrganizationId())
                 .addValue("user_id", user.getId())
                 .addValue("now", LocalDateTime.now());
 
@@ -57,13 +64,19 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
 
     @Override
     public Workorder update(Workorder workorder, ApplicationUser user) {
+        Workorder existing = this.findById(workorder.getId());
+        workorder.setOrganizationId(existing.getOrganizationId());
+        workorder.validate();
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "update workorder set "
                 + "title = :title,"
                 + "description = :description, "
                 + "team_id = :team_id, "
+                + "status = :status, "
                 + "updated_by = :user_id "
             + "where id = :id";
+
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("title", workorder.getTitle())
@@ -71,6 +84,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 .addValue("team_id", workorder.getTeamId())
                 .addValue("organization_id", workorder.getOrganizationId())
                 .addValue("id", workorder.getId())
+                .addValue("status", workorder.getStatus().name())
                 .addValue("user_id", user.getId())
                 .addValue("now", LocalDateTime.now());
 

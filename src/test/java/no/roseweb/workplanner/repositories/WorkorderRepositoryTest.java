@@ -1,10 +1,6 @@
 package no.roseweb.workplanner.repositories;
 
-import no.roseweb.workplanner.models.ApplicationUser;
-import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.Team;
-import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.models.WorkorderStatus;
+import no.roseweb.workplanner.models.*;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,4 +64,43 @@ public class WorkorderRepositoryTest {
         assertThat(workorderList.size()).isGreaterThan(0);
     }
 
+    @Test
+    public void testChangeStatus() {
+        OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(namedParameterJdbcTemplate);
+        WorkorderRepository workorderRepository = new WorkorderRepositoryImpl(namedParameterJdbcTemplate);
+        TeamRepository teamRepository = new TeamRepositoryImpl(namedParameterJdbcTemplate);
+        ApplicationUser user = new ApplicationUser();
+        user.setId(1L);
+        user.setOrganizationId(2L);
+        user.setEmail("test@example.com");
+
+        Organization organization = new Organization();
+        organization.setEmail("test@example.com");
+        organization.setName("Organization");
+        organization.setOrganizationNumber("1234");
+        Organization createdOrganization = organizationRepository.create(organization);
+
+        Team team = new Team();
+        team.setName("Team");
+        team.setOrganizationId(createdOrganization.getId());
+        Team createdTeam = teamRepository.create(team);
+
+        WorkorderCreateRequest wo = new WorkorderCreateRequest();
+        wo.setTitle("Title");
+        wo.setDescription("Description");
+        Workorder createdWorkorder = workorderRepository.create(wo, user);
+        assertThat(createdWorkorder.getId()).isNotNull();
+        assertThat(createdWorkorder.getTeamId()).isNull();
+        assertThat(createdWorkorder.getStatus()).isEqualByComparingTo(WorkorderStatus.NEW);
+
+        createdWorkorder.setDescription("Description updated");
+        createdWorkorder.setTitle("Title updated");
+        createdWorkorder.setTeamId(createdTeam.getId());
+        createdWorkorder.setStatus(WorkorderStatus.APPROVED);
+        Workorder updatedWorkorder = workorderRepository.update(createdWorkorder, user);
+        assertThat(updatedWorkorder.getDescription()).isEqualTo("Description updated");
+        assertThat(updatedWorkorder.getTitle()).isEqualTo("Title updated");
+        assertThat(updatedWorkorder.getTeamId()).isNotNull();
+        assertThat(updatedWorkorder.getStatus()).isEqualByComparingTo(WorkorderStatus.APPROVED);
+    }
 }

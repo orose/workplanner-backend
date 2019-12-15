@@ -2,26 +2,21 @@ package no.roseweb.workplanner.services;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.models.WorkorderStatus;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
-import no.roseweb.workplanner.repositories.WorkorderRepository;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -81,6 +76,7 @@ public class WorkorderServiceTest {
         workorder.setId(1L);
         workorder.setDescription("description updated");
         workorder.setTitle("title updated");
+        workorder.setStatus(WorkorderStatus.IN_PROGRESS);
         ApplicationUser user = new ApplicationUser();
         user.setOrganizationId(1L);
 
