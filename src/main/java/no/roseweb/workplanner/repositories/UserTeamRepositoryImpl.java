@@ -1,8 +1,6 @@
 package no.roseweb.workplanner.repositories;
 
 import no.roseweb.workplanner.models.UserTeam;
-import no.roseweb.workplanner.models.rowmappers.UserTeamRowMapper;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -20,7 +18,7 @@ public class UserTeamRepositoryImpl implements UserTeamRepository {
     }
 
     @Override
-    public UserTeam create(UserTeam userTeam) {
+    public int create(UserTeam userTeam) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into user_team ("
             + "user_email,"
@@ -34,34 +32,17 @@ public class UserTeamRepositoryImpl implements UserTeamRepository {
             .addValue("team_id", userTeam.getTeamId())
             .addValue("permission_key", userTeam.getPermissionKey());
 
-        namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
-
-        return this.findById(keyHolder.getKey().longValue());
+        return namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
     }
 
     @Override
-    public void remove(UserTeam userTeam) {
+    public int remove(String userId, Long teamId) {
         String sql = "delete from user_team where user_email = :user_email and team_id = :team_id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("user_email", userTeam.getUserEmail())
-                .addValue("team_id", userTeam.getTeamId());
+                .addValue("user_email", userId)
+                .addValue("team_id", teamId);
 
-        namedParameterJdbcTemplate.update(sql, parameters);
-    }
-
-    @Override
-    public UserTeam findById(Long id) {
-        String sql = "select * from user_team where id = :id";
-
-        SqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("id", id);
-
-        try {
-            return (UserTeam) namedParameterJdbcTemplate.queryForObject(
-                    sql, parameters, new UserTeamRowMapper());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        return namedParameterJdbcTemplate.update(sql, parameters);
     }
 }

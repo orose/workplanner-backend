@@ -6,6 +6,7 @@ truncate table user;
 truncate table user_team;
 truncate table invite;
 truncate table workorder;
+truncate table user_workorder;
 SET foreign_key_checks = 1;
 
 insert into permission (permission_key, description) values ('ADMIN', 'Administrator permission');

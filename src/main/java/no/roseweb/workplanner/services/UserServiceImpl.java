@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserTeam connectToTeam(String email, Long teamId, String permissionKey) {
+    public int connectToTeam(String email, Long teamId, String permissionKey) {
         UserTeam ut = new UserTeam();
         ut.setTeamId(teamId);
         ut.setUserEmail(email);
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
         ut.setTeamId(teamId);
         ut.setUserEmail(email);
 
-        userTeamRepository.remove(ut);
+        userTeamRepository.remove(email, teamId);
     }
 
     @Override

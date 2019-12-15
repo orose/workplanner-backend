@@ -57,18 +57,12 @@ public class ApplicationUserTeamRepositoryTest {
         ut.setUserEmail(createdUser.getEmail());
         ut.setPermissionKey("ADMIN");
         ut.setTeamId(team.getId());
-        UserTeam userTeam = userTeamRepository.create(ut);
+        int affectedRows = userTeamRepository.create(ut);
 
-        assertThat(userTeam.getUserEmail()).isEqualTo(createdUser.getEmail());
-        assertThat(userTeam.getId()).isPositive();
+        assertThat(affectedRows).isEqualTo(1);
 
-        Long id = userTeam.getId();
-        UserTeam foundUserTeam = userTeamRepository.findById(id);
-        assertThat(foundUserTeam.getId()).isEqualTo(id);
-
-        userTeamRepository.remove(userTeam);
-        UserTeam deletedUserTeam = userTeamRepository.findById(id);
-        assertThat(deletedUserTeam).isNull();
+        affectedRows = userTeamRepository.remove(createdUser.getEmail(), team.getId());
+        assertThat(affectedRows).isEqualTo(1);
     }
 
 }
