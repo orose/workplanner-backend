@@ -86,4 +86,37 @@ public class WorkorderServiceTest {
         assertThat(updated.getTitle()).isEqualTo("title updated");
         assertThat(updated.getDescription()).isEqualTo("description updated");
     }
+
+    @Test
+    @WithMockUser("test@email.com")
+    public void shouldCallAssignUser() {
+        Workorder workorder = new Workorder();
+        workorder.setId(1L);
+        workorder.setDescription("description updated");
+        workorder.setTitle("title updated");
+        workorder.setStatus(WorkorderStatus.IN_PROGRESS);
+        ApplicationUser user = new ApplicationUser();
+        user.setOrganizationId(1L);
+
+        Integer rows = service.assignUser(workorder, "test@email.com");
+
+        assertThat(rows).isEqualTo(1L);
+    }
+
+    @Test
+    @WithMockUser("test@email.com")
+    public void shouldCallUnassignUser() {
+        Workorder workorder = new Workorder();
+        workorder.setId(1L);
+        workorder.setDescription("description updated");
+        workorder.setTitle("title updated");
+        workorder.setStatus(WorkorderStatus.IN_PROGRESS);
+        ApplicationUser user = new ApplicationUser();
+        user.setOrganizationId(1L);
+
+        service.assignUser(workorder, "test@email.com");
+        Integer rows = service.unassignUser(workorder, "test@email.com");
+
+        assertThat(rows).isEqualTo(1L);
+    }
 }

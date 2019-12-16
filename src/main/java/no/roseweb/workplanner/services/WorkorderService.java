@@ -17,4 +17,10 @@ public interface WorkorderService {
     Workorder findById(Long id);
     List<Workorder> getAll(Integer limit, Integer offset);
     Integer countAll();
+
+    @PreAuthorize("hasPermission(#workorder, 'edit')")
+    Integer assignUser(Workorder workorder, String userId);
+
+    @PreAuthorize("hasPermission(#workorder, 'edit')")
+    Integer unassignUser(Workorder workorder, String userId);
 }

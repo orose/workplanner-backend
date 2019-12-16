@@ -9,6 +9,7 @@ import no.roseweb.workplanner.services.WorkorderService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,6 +80,38 @@ public class WorkorderController {
         response.setStatus(HttpServletResponse.SC_OK);
 
         return updatedWorkorder;
+    }
+
+    @PostMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
+    public Workorder assignWorkorder(
+            @PathVariable Long id,
+            @PathVariable String userId,
+            HttpServletResponse response
+    ) {
+        Workorder w = workorderService.findById(id);
+        Integer affectedRows = workorderService.assignUser(w, userId);
+
+        if (affectedRows == 1) {
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        }
+
+        return w;
+    }
+
+    @DeleteMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
+    public Workorder unassignWorkorder(
+            @PathVariable Long id,
+            @PathVariable String userId,
+            HttpServletResponse response
+    ) {
+        Workorder w = workorderService.findById(id);
+        Integer affectedRows = workorderService.unassignUser(w, userId);
+
+        if (affectedRows == 1) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        }
+
+        return w;
     }
 
     private ApplicationUser getCurrentUser() {

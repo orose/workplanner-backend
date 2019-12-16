@@ -24,6 +24,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -60,6 +61,9 @@ public class WorkorderControllerTest extends BaseControllerTest {
         when(workorderService.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
         when(workorderService.countAll()).thenReturn(123);
         when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
+
+        when(workorderService.assignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyString())).thenReturn(1);
+        when(workorderService.unassignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyString())).thenReturn(1);
     }
 
     @Test
@@ -164,5 +168,47 @@ public class WorkorderControllerTest extends BaseControllerTest {
                 )
             )
         );
+    }
+
+    @Test
+    @WithMockUser
+    public void assignWorkorder() throws Exception {
+        mvc.perform(post(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "test@email.com")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andDo(
+                        document("workorder-assign",
+                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                                responseFields(
+                                        fieldWithPath("id").description(""),
+                                        fieldWithPath("description").description(""),
+                                        fieldWithPath("title").description(""),
+                                        fieldWithPath("teamId").description(""),
+                                        fieldWithPath("status").description(""),
+                                        fieldWithPath("organizationId").description("")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @WithMockUser
+    public void unassignWorkorder() throws Exception {
+        mvc.perform(delete(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "test@email.com")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(
+                        document("workorder-assign",
+                                preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+                                responseFields(
+                                        fieldWithPath("id").description(""),
+                                        fieldWithPath("description").description(""),
+                                        fieldWithPath("title").description(""),
+                                        fieldWithPath("teamId").description(""),
+                                        fieldWithPath("status").description(""),
+                                        fieldWithPath("organizationId").description("")
+                                )
+                        )
+                );
     }
 }

@@ -2,6 +2,7 @@ package no.roseweb.workplanner.controllers;
 
 import no.roseweb.workplanner.repositories.InviteRepository;
 import no.roseweb.workplanner.repositories.OrganizationRepository;
+import no.roseweb.workplanner.repositories.UserWorkorderRepository;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.security.CustomAccessDeniedHandler;
 import no.roseweb.workplanner.security.MySavedRequestAwareAuthenticationSuccessHandler;
@@ -39,6 +40,9 @@ class BaseControllerTest {
 
     @MockBean
     WorkorderRepository workorderRepository;
+
+    @MockBean
+    UserWorkorderRepository userWorkorderRepository;
 
     @MockBean
     UserService userService;

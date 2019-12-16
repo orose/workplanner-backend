@@ -3,6 +3,7 @@ package no.roseweb.workplanner.services;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
+import no.roseweb.workplanner.repositories.UserWorkorderRepository;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,14 @@ import java.util.List;
 public class WorkorderServiceImpl implements WorkorderService {
 
     private WorkorderRepository workorderRepository;
+    private UserWorkorderRepository userWorkorderRepository;
 
-    public WorkorderServiceImpl(WorkorderRepository workorderRepository) {
+    public WorkorderServiceImpl(
+        WorkorderRepository workorderRepository,
+        UserWorkorderRepository userWorkorderRepository
+    ) {
         this.workorderRepository = workorderRepository;
+        this.userWorkorderRepository = userWorkorderRepository;
     }
 
     @Override
@@ -40,5 +46,15 @@ public class WorkorderServiceImpl implements WorkorderService {
     @Override
     public Integer countAll() {
         return workorderRepository.countAll();
+    }
+
+    @Override
+    public Integer assignUser(Workorder workorder, String userId) {
+        return userWorkorderRepository.addAssignment(userId, workorder.getId());
+    }
+
+    @Override
+    public Integer unassignUser(Workorder workorder, String userId) {
+        return userWorkorderRepository.removeAssignment(userId, workorder.getId());
     }
 }

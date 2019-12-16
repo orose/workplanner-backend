@@ -12,6 +12,7 @@ public final class RestPath {
     public static final String LOGIN = "/login";
     static final String WORKORDER = "/workorder";
     static final String WORKORDER_ID = "/workorder/{id}";
+    static final String WORKORDER_ASSIGN = "/workorder/{id}/assign/{userId}";
 
     private RestPath() {
     }
