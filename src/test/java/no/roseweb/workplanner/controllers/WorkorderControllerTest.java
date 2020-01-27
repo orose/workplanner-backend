@@ -198,7 +198,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(
-                        document("workorder-assign",
+                        document("workorder-unassign",
                                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 responseFields(
                                         fieldWithPath("id").description(""),

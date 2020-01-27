@@ -37,3 +37,21 @@ include::{snippets}/workorder-update/http-request.adoc[]
 include::{snippets}/workorder-update/http-response.adoc[]
 
 
+=== Assign
+
+.request
+include::{snippets}/workorder-assign/http-request.adoc[]
+
+.response
+include::{snippets}/workorder-assign/http-response.adoc[]
+
+
+=== Unassign
+
+.request
+include::{snippets}/workorder-unassign/http-request.adoc[]
+
+.response
+include::{snippets}/workorder-unassign/http-response.adoc[]
+
+
