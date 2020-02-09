@@ -6,6 +6,8 @@ import no.roseweb.workplanner.models.WorkorderListResponse;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import no.roseweb.workplanner.services.UserService;
 import no.roseweb.workplanner.services.WorkorderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class WorkorderController {
+    private static final Logger LOG = LoggerFactory.getLogger(WorkorderController.class);
     private final WorkorderService workorderService;
     private final UserService userService;
 
@@ -35,6 +38,7 @@ public class WorkorderController {
 
     @PostMapping(value = RestPath.API + RestPath.WORKORDER)
     public Workorder createWorkorder(@RequestBody WorkorderCreateRequest request, HttpServletResponse response) {
+        LOG.info("Create workorder. Title={}", request.getTitle());
         Workorder createdWorkorder = workorderService.create(request, this.getCurrentUser());
 
         response.setStatus(HttpServletResponse.SC_CREATED);
@@ -48,6 +52,7 @@ public class WorkorderController {
         @RequestParam(defaultValue = "0") Integer offset,
         HttpServletResponse response
     ) {
+        LOG.info("Get list. Offset={}, Limit={}", offset, limit);
         WorkorderListResponse result = new WorkorderListResponse();
         result.setLimit(limit);
         result.setOffset(offset);
@@ -61,6 +66,7 @@ public class WorkorderController {
 
     @GetMapping(value = RestPath.API + RestPath.WORKORDER_ID)
     public Workorder getWorkorder(@PathVariable Long id, HttpServletResponse response) {
+        LOG.info("Get workorder. Id={}", id);
 
         Workorder workorder = workorderService.findById(id);
 
@@ -74,6 +80,7 @@ public class WorkorderController {
             @PathVariable Long id,
             @RequestBody Workorder body, HttpServletResponse response
     ) {
+        LOG.info("Update workorder. Id={}", id);
         body.setId(id);
         Workorder updatedWorkorder = workorderService.update(body, this.getCurrentUser());
 
@@ -88,6 +95,7 @@ public class WorkorderController {
             @PathVariable String userId,
             HttpServletResponse response
     ) {
+        LOG.info("Assign workorder. Id={}, UserId={}", id, userId);
         Workorder w = workorderService.findById(id);
         Integer affectedRows = workorderService.assignUser(w, userId);
 
@@ -104,6 +112,7 @@ public class WorkorderController {
             @PathVariable String userId,
             HttpServletResponse response
     ) {
+        LOG.info("Unassign workorder. Id={}, UserId={}", id, userId);
         Workorder w = workorderService.findById(id);
         Integer affectedRows = workorderService.unassignUser(w, userId);
 
