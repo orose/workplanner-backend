@@ -52,4 +52,14 @@ public class UserWorkorderRepositoryTest {
 
         assertThat(rows).isEqualTo(0);
     }
+
+    @Test
+    public void testRemoveAllAssignmentShouldReturnOneUpdatedRows() {
+        UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
+        Integer rows = userWorkorderRepository.removeAllAssignments(1L);
+        assertThat(rows).isEqualTo(1);
+
+        rows = userWorkorderRepository.removeAllAssignments(1L);
+        assertThat(rows).isEqualTo(0);
+    }
 }
