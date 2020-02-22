@@ -7,4 +7,4 @@ create table user_team (
   constraint fk_user_team__team foreign key (team_id) references team (id),
   constraint fk_user_team__user foreign key (user_email) references user (email),
   constraint fk_user_team__permission foreign key (permission_key) references permission (permission_key)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

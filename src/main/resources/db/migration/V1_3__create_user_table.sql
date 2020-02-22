@@ -7,4 +7,4 @@ create table if not exists user
     password varchar(255) not null,
     organization_id int not null,
     constraint fk_organization__user foreign key (organization_id) references organization(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

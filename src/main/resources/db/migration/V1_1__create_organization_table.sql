@@ -4,4 +4,4 @@ create table if not exists organization
     name varchar(255) not null,
     email varchar(255),
     organization_number varchar(255)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

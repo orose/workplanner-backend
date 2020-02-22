@@ -12,4 +12,4 @@ create table if not exists workorder
     updated_by int,
     constraint fk_team__workorder foreign key (team_id) references team(id),
     constraint fk_organization__workorder foreign key (organization_id) references organization(id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
