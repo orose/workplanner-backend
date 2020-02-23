@@ -11,5 +11,7 @@ create table if not exists workorder
     updated_at timestamp default current_timestamp on update current_timestamp,
     updated_by int,
     constraint fk_team__workorder foreign key (team_id) references team(id),
-    constraint fk_organization__workorder foreign key (organization_id) references organization(id)
+    constraint fk_organization__workorder foreign key (organization_id) references organization(id),
+    constraint fk_user__workorder foreign key (updated_by) references user(id),
+    constraint fk_user__workorder2 foreign key (created_by) references user(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
