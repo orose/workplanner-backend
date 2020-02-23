@@ -27,11 +27,12 @@ public class UserWorkorderRepositoryTest {
         assertThat(affectedRows).isEqualTo(1);
     }
 
-    @Test(expected = DuplicateKeyException.class)
-    public void testAssignSameUserTwiceShouldFail() {
+    @Test
+    public void testAssignSameUserTwiceShouldNotFail() {
         UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
         userWorkorderRepository.addAssignment("test@email.com", 1L);
-        userWorkorderRepository.addAssignment("test@email.com", 1L);
+        Integer affectedRows = userWorkorderRepository.addAssignment("test@email.com", 1L);
+        assertThat(affectedRows).isEqualTo(1);
     }
 
     @Test

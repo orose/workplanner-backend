@@ -22,6 +22,9 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
         if (workorderId == null || workorderId < 0) {
             throw new IllegalArgumentException("Cannot assign user to workorder. Invalid parameter workorderId.");
         }
+        if (assignmentExists(workorderId, userId)) {
+            return 1;
+        }
         String sql = "insert into user_workorder "
                 + "(user_email, workorder_id) "
                 + "values "
@@ -65,5 +68,26 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
                 .addValue("workorderId", workorderId);
 
         return namedParameterJdbcTemplate.update(sql, parameters);
+    }
+
+    private boolean assignmentExists(Long workorderId, String userId) {
+        if (userId == null || userId.isEmpty()) {
+            throw new IllegalArgumentException("Missing parameter userId.");
+        }
+        if (workorderId == null || workorderId < 0) {
+            throw new IllegalArgumentException("Missing parameter workorderId.");
+        }
+        String sql = "select count(*) "
+            + "from user_workorder "
+            + "where user_email = :userId "
+            + "and workorder_id = :workorderId";
+
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("userId", userId)
+            .addValue("workorderId", workorderId);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameters, Integer.class);
+
+        return count != null && count > 0;
     }
 }
