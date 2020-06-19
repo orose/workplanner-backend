@@ -36,10 +36,10 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
                 .addValue("organization_number", organization.getOrganizationNumber())
                 .addValue("email", organization.getEmail());
 
-        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[] { "id" });
+        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[] {"id"});
         Long id;
         if (keyHolder.getKeys() != null && keyHolder.getKeys().size() > 1) {
-            id = (Long)keyHolder.getKeys().get("id");
+            id = (Long) keyHolder.getKeys().get("id");
         } else {
             id = keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
         }

@@ -29,10 +29,10 @@ public class TeamRepositoryImpl implements TeamRepository {
             .addValue("name", team.getName())
             .addValue("organization_id", team.getOrganizationId());
 
-        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[] { "id" });
+        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[] {"id"});
         Long id;
         if (keyHolder.getKeys() != null && keyHolder.getKeys().size() > 1) {
-            id = (Long)keyHolder.getKeys().get("id");
+            id = (Long) keyHolder.getKeys().get("id");
         } else {
             id = keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
         }
