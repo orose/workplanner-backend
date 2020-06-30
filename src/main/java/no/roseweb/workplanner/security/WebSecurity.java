@@ -23,13 +23,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private Environment environment;
 
-    private final String CONFIG_FRONTEND_SERVER;
+    private final String configFrontendServer;
 
-    public WebSecurity(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, Environment environment) {
+    public WebSecurity(
+        UserDetailsService userDetailsService,
+        BCryptPasswordEncoder bCryptPasswordEncoder,
+        Environment environment
+    ) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.environment = environment;
-        this.CONFIG_FRONTEND_SERVER = environment.getRequiredProperty("app.frontend_server");
+        this.configFrontendServer = environment.getRequiredProperty("app.frontend_server");
 
     }
 
@@ -55,15 +59,16 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList(CONFIG_FRONTEND_SERVER));
+        configuration.setAllowedOrigins(Arrays.asList(configFrontendServer));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With","Origin","Content-Type","Accept","Authorization"));
+        configuration.setAllowedHeaders(
+            Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
 
         // This allow us to expose the headers
         configuration.setExposedHeaders(Arrays.asList(
                 "Access-Control-Allow-Headers",
-                "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
-                "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+                "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, "
+                + "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
