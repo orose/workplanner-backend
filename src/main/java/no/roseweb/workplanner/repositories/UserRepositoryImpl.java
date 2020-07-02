@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
         NamedParameterJdbcTemplate namedParameterJdbcTemplate =
             new NamedParameterJdbcTemplate(jdbcTemplate);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into user ("
+        String sql = "insert into application_user ("
             + "email, "
             + "firstname, "
             + "lastname, "
@@ -46,14 +46,19 @@ public class UserRepositoryImpl implements UserRepository {
             .addValue("password", user.getPassword())
             .addValue("organization_id", user.getOrganizationId());
 
-        namedParameterJdbcTemplate.update(sql, parameters, keyHolder);
-        Long id = keyHolder.getKey().longValue();
+        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[] {"id"});
+        Long id;
+        if (keyHolder.getKeys() != null && keyHolder.getKeys().size() > 1) {
+            id = (Long) keyHolder.getKeys().get("id");
+        } else {
+            id = keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
+        }
         return this.findById(id);
     }
 
     @Override
     public ApplicationUser findByEmail(String email) {
-        String sql = "select * from user where email = ?";
+        String sql = "select * from application_user where email = ?";
 
         List<ApplicationUser> userList = jdbcTemplate.query(sql, new Object[] {email}, new ApplicationUserRowMapper());
 
@@ -62,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public ApplicationUser findById(Long id) {
-        String sql = "select * from user where id = ?";
+        String sql = "select * from application_user where id = ?";
 
         List<ApplicationUser> userList = jdbcTemplate.query(sql, new Object[] {id}, new ApplicationUserRowMapper());
 

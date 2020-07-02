@@ -66,6 +66,8 @@ public class UserServiceImpl implements UserService {
             inviteRepository.delete(invite.getEmail());
         }
 
+        createdUser.setPassword(null);
+
         return createdUser;
     }
 

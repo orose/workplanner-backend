@@ -2,9 +2,9 @@
 
 ## Installation
 
-This application is a Spring Boot application communicating with a MySQL database. Right now it runs on Java 11.
+This application is a Spring Boot application communicating with a PostgreSQL database. Right now it runs on Java 11.
 
-You could install JDK 11 and a MySQL server and run this in a traditional way, but the fastest way to get up and running is by using Docker.
+You could install JDK 11 and a PostgreSQL server and run this in a traditional way, but the fastest way to get up and running is by using Docker.
 
 ### Docker
 
