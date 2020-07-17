@@ -136,6 +136,7 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
                 w.setOrganizationId(new Long((Integer) row.get("organization_id")));
                 w.setTitle((String) row.get("title"));
                 w.setDescription((String) row.get("description"));
+                w.setStatus(WorkorderStatus.valueOf((String) row.get("status")));
 
                 workorders.add(w);
             }
