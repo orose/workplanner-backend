@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 @RestController
 public class WorkorderController {
@@ -50,14 +51,18 @@ public class WorkorderController {
     public WorkorderListResponse getWorkorderList(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset,
-        HttpServletResponse response
+        HttpServletResponse response,
+        Principal principal
     ) {
-        LOG.info("Get list. Offset={}, Limit={}", offset, limit);
+        ApplicationUser user = userService.findByEmail(principal.getName());
+        Long organizationId = user.getOrganizationId();
+
+        LOG.info("Get list. OrganizationId={}, Offset={}, Limit={}", organizationId, offset, limit);
         WorkorderListResponse result = new WorkorderListResponse();
         result.setLimit(limit);
         result.setOffset(offset);
-        result.setTotal(workorderService.countAll());
-        result.setData(workorderService.getAll(limit, offset));
+        result.setTotal(workorderService.countAll(organizationId));
+        result.setData(workorderService.getAll(organizationId, limit, offset));
 
         response.setStatus(HttpServletResponse.SC_OK);
 

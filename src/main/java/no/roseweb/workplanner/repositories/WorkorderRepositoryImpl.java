@@ -116,10 +116,14 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
     }
 
     @Override
-    public List<Workorder> getAll(Integer limit, Integer offset) {
-        String sql = "select * from workorder limit :limit offset :offset";
+    public List<Workorder> getAll(Long organizationId, Integer limit, Integer offset) {
+        String sql = "select * " +
+            "from workorder " +
+            "where organization_id = :organizationId" +
+            "limit :limit offset :offset";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("organizationId", organizationId)
                 .addValue("limit", limit)
                 .addValue("offset", offset);
 
@@ -129,11 +133,11 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
 
             for (Map row : rows) {
                 Workorder w = new Workorder();
-                w.setId(new Long((Integer) row.get("id")));
+                w.setId(Long.valueOf((Integer) row.get("id")));
                 if (row.get("team_id") != null) {
-                    w.setTeamId(new Long((Integer) row.get("team_id")));
+                    w.setTeamId(Long.valueOf((Integer) row.get("team_id")));
                 }
-                w.setOrganizationId(new Long((Integer) row.get("organization_id")));
+                w.setOrganizationId(Long.valueOf((Integer) row.get("organization_id")));
                 w.setTitle((String) row.get("title"));
                 w.setDescription((String) row.get("description"));
                 w.setStatus(WorkorderStatus.valueOf((String) row.get("status")));
@@ -147,13 +151,15 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
     }
 
     @Override
-    public Integer countAll() {
-        String sql = "select count(*) from workorder";
+    public Integer countAll(Long organizationId) {
+        String sql = "select count(*) from workorder where organization_id = :organizationId";
+
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("organizationId", organizationId);
 
         try {
-            Integer count = namedParameterJdbcTemplate.
-                    queryForObject(sql, new MapSqlParameterSource(), Integer.class);
-            return count;
+            return namedParameterJdbcTemplate.
+                queryForObject(sql, parameters, Integer.class);
         } catch (DataAccessException e) {
             return null;
         }

@@ -39,13 +39,13 @@ public class WorkorderServiceImpl implements WorkorderService {
     }
 
     @Override
-    public List<Workorder> getAll(Integer limit, Integer offset) {
-        return workorderRepository.getAll(limit, offset);
+    public List<Workorder> getAll(Long organizationId, Integer limit, Integer offset) {
+        return workorderRepository.getAll(organizationId, limit, offset);
     }
 
     @Override
-    public Integer countAll() {
-        return workorderRepository.countAll();
+    public Integer countAll(Long organizationId) {
+        return workorderRepository.countAll(organizationId);
     }
 
     @Override

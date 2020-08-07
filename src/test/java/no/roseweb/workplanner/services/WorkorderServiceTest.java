@@ -6,6 +6,7 @@ import no.roseweb.workplanner.models.WorkorderStatus;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,13 +29,13 @@ public class WorkorderServiceTest {
 
     @Test
     public void shouldCallRepositoryCount() {
-        Integer count = service.countAll();
+        Integer count = service.countAll(ArgumentMatchers.any());
         assertThat(count).isPositive();
     }
 
     @Test
     public void shouldCallgetAll() {
-        List<Workorder> workorders = service.getAll(10, 0);
+        List<Workorder> workorders = service.getAll(10L, 10, 0);
         assertThat(workorders.size()).isPositive();
     }
 

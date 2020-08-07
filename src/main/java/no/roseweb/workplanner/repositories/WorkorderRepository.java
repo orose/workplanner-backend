@@ -10,6 +10,6 @@ public interface WorkorderRepository {
     Workorder create(WorkorderCreateRequest request, ApplicationUser user);
     Workorder update(Workorder workorder, ApplicationUser user);
     Workorder findById(Long id);
-    List<Workorder> getAll(Integer limit, Integer offset);
-    Integer countAll();
+    List<Workorder> getAll(Long organizationId, Integer limit, Integer offset);
+    Integer countAll(Long organizationId);
 }

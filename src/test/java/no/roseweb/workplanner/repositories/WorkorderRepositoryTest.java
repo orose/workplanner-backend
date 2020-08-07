@@ -60,7 +60,7 @@ public class WorkorderRepositoryTest {
         assertThat(updatedWorkorder.getTitle()).isEqualTo("Title updated");
         assertThat(updatedWorkorder.getTeamId()).isNotNull();
 
-        List<Workorder> workorderList = workorderRepository.getAll(10, 0);
+        List<Workorder> workorderList = workorderRepository.getAll(10L, 10, 0);
         assertThat(workorderList.size()).isGreaterThan(0);
     }
 

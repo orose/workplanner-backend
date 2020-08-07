@@ -56,10 +56,10 @@ public class WorkorderControllerTest extends BaseControllerTest {
         when(workorderService.create(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
         when(workorderService.findById(1L)).thenReturn(workorder);
         when(workorderService
-            .getAll(ArgumentMatchers.any(),ArgumentMatchers.any()))
+            .getAll(ArgumentMatchers.any(),ArgumentMatchers.any(),ArgumentMatchers.any()))
             .thenReturn(workorderList);
         when(workorderService.update(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(workorder);
-        when(workorderService.countAll()).thenReturn(123);
+        when(workorderService.countAll(ArgumentMatchers.any())).thenReturn(123);
         when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
 
         when(workorderService.assignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyString())).thenReturn(1);
