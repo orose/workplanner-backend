@@ -117,10 +117,10 @@ public class WorkorderRepositoryImpl implements WorkorderRepository {
 
     @Override
     public List<Workorder> getAll(Long organizationId, Integer limit, Integer offset) {
-        String sql = "select * " +
-            "from workorder " +
-            "where organization_id = :organizationId" +
-            "limit :limit offset :offset";
+        String sql = "select * "
+            + "from workorder "
+            + "where organization_id = :organizationId "
+            + "limit :limit offset :offset ";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("organizationId", organizationId)
