@@ -3,6 +3,7 @@ package no.roseweb.workplanner.services;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Invite;
 import no.roseweb.workplanner.models.Organization;
+import no.roseweb.workplanner.models.OrganizationUserListResponse;
 import no.roseweb.workplanner.models.Team;
 import no.roseweb.workplanner.models.UserTeam;
 import no.roseweb.workplanner.repositories.InviteRepository;
@@ -11,6 +12,8 @@ import no.roseweb.workplanner.repositories.TeamRepository;
 import no.roseweb.workplanner.repositories.UserRepository;
 import no.roseweb.workplanner.repositories.UserTeamRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -93,5 +96,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApplicationUser findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public OrganizationUserListResponse findByOrganizationId(Long organizationId, Integer offset, Integer limit) {
+        Organization organization = organizationRepository.findById(organizationId);
+        List<ApplicationUser> users = userRepository.findByOrganizationId(organization.getId(), offset, limit);
+        Integer userCount = userRepository.countAllByOrganizationId(organization.getId());
+
+        OrganizationUserListResponse response = new OrganizationUserListResponse();
+        response.setData(users);
+        response.setTotal(userCount);
+        response.setLimit(limit);
+        response.setOffset(offset);
+
+        return response;
     }
 }

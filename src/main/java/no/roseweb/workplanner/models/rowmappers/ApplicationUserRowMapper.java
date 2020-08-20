@@ -6,9 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ApplicationUserRowMapper implements RowMapper {
+public class ApplicationUserRowMapper implements RowMapper<ApplicationUser> {
     @Override
-    public Object mapRow(ResultSet rs, int i) throws SQLException {
+    public ApplicationUser mapRow(ResultSet rs, int i) throws SQLException {
         ApplicationUser user = new ApplicationUser();
 
         user.setId(rs.getLong("id"));

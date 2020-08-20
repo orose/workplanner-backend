@@ -17,17 +17,17 @@ import java.util.List;
 public class UserRepositoryImpl implements UserRepository {
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public UserRepositoryImpl(JdbcTemplate jdbcTemplate, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
 
     @Override
     public ApplicationUser create(ApplicationUser user) {
-        NamedParameterJdbcTemplate namedParameterJdbcTemplate =
-            new NamedParameterJdbcTemplate(jdbcTemplate);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into application_user ("
             + "email, "
@@ -72,5 +72,35 @@ public class UserRepositoryImpl implements UserRepository {
         List<ApplicationUser> userList = jdbcTemplate.query(sql, new Object[] {id}, new ApplicationUserRowMapper());
 
         return userList.isEmpty() ? null : userList.get(0);
+    }
+
+    @Override
+    public List<ApplicationUser> findByOrganizationId(Long organizationId, Integer offset, Integer limit) {
+        String sql = "select * "
+                + "from application_user "
+                + "where organization_id = :organizationId "
+                + "limit :limit offset :offset ";
+
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("organizationId", organizationId)
+                .addValue("limit", limit)
+                .addValue("offset", offset);
+
+        List<ApplicationUser> users = namedParameterJdbcTemplate.query(sql, parameters, new ApplicationUserRowMapper());
+        users.forEach(user -> user.setPassword(null));
+
+        return users;
+    }
+
+    @Override
+    public Integer countAllByOrganizationId(Long organizationId) {
+        String sql = "select count(*) "
+            + "from application_user "
+            + "where organization_id = :organizationId";
+
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("organizationId", organizationId);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, parameters, Integer.class);
     }
 }

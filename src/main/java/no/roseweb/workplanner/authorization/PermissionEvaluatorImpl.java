@@ -1,7 +1,9 @@
 package no.roseweb.workplanner.authorization;
 
 import no.roseweb.workplanner.models.ApplicationUser;
+import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.OrganizationRepository;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
 import org.springframework.security.access.PermissionEvaluator;
@@ -14,14 +16,22 @@ import java.io.Serializable;
 public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements PermissionEvaluator {
 
     private WorkorderRepository workorderRepository;
+    private OrganizationRepository organizationRepository;
+
     private static final String PERMISSION_EDIT = "edit";
     private static final String PERMISSION_READ = "read";
 
     private static final String WORKORDER = "Workorder";
+    private static final String ORGANIZATION = "Organization";
 
-    public PermissionEvaluatorImpl(UserService userService, WorkorderRepository workorderRepository) {
+    public PermissionEvaluatorImpl(
+        UserService userService,
+        WorkorderRepository workorderRepository,
+        OrganizationRepository organizationRepository
+    ) {
         super(userService);
         this.workorderRepository = workorderRepository;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -38,6 +48,11 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
                 Workorder workorder = workorderRepository.findById(object.getId());
                 return user.getOrganizationId().equals(workorder.getOrganizationId());
             }
+        } else if (targetDomainObject instanceof Organization) {
+            if (permission.equals(PERMISSION_EDIT) || permission.equals(PERMISSION_READ)) {
+                Organization object = (Organization) targetDomainObject;
+                return user.getOrganizationId().equals(object.getId());
+            }
         }
         return false;
     }
@@ -47,11 +62,25 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
         ApplicationUser user = getUserFromAuth(auth);
 
         if (PERMISSION_READ.equals(permission)) {
-            if (WORKORDER.equals(targetType)) {
-                return evaluateWorkorderRead(user, (Long) targetId);
+            Long id = (Long) targetId;
+            switch (targetType) {
+                case WORKORDER:
+                    return evaluateWorkorderRead(user, id);
+                case ORGANIZATION:
+                    return evaluateOrganizationRead(user, id);
+                default:
+                    return false;
             }
         }
         return false;
+    }
+
+    private boolean evaluateOrganizationRead(ApplicationUser user, Long id) {
+        if (user == null) {
+            return false;
+        }
+        Organization organization = organizationRepository.findById(id);
+        return user.getOrganizationId().equals(organization.getId());
     }
 
     private Boolean evaluateWorkorderRead(ApplicationUser user, Long id) {

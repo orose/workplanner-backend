@@ -1,5 +1,6 @@
 package no.roseweb.workplanner.repositories;
 
+import no.roseweb.workplanner.exceptions.EntityNotFoundException;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.rowmappers.OrganizationRowMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -64,7 +65,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
             return (Organization) namedParameterJdbcTemplate.queryForObject(
                     sql, parameters, new OrganizationRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            throw new EntityNotFoundException(Organization.class.getSimpleName(), id);
         }
     }
 }
