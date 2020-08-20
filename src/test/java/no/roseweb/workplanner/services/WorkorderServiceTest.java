@@ -29,13 +29,13 @@ public class WorkorderServiceTest {
 
     @Test
     public void shouldCallRepositoryCount() {
-        Integer count = service.countAll(ArgumentMatchers.any());
+        Integer count = service.countAll(1L);
         assertThat(count).isPositive();
     }
 
     @Test
     public void shouldCallgetAll() {
-        List<Workorder> workorders = service.getAll(10L, 10, 0);
+        List<Workorder> workorders = service.getAll(1L, 10, 0);
         assertThat(workorders.size()).isPositive();
     }
 

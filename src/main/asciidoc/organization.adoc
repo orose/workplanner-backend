@@ -9,3 +9,12 @@ include::{snippets}/organization-get/http-request.adoc[]
 include::{snippets}/organization-get/http-response.adoc[]
 
 
+=== Get an organization's users
+
+.request
+include::{snippets}/organizationUser-get/http-request.adoc[]
+
+.response
+include::{snippets}/organizationUser-get/http-response.adoc[]
+
+
