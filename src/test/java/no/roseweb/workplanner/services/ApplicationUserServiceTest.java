@@ -81,7 +81,7 @@ public class ApplicationUserServiceTest {
         UserRepository userRepository = new UserRepositoryImpl(jdbcTemplate, bCryptPasswordEncoder);
 
         ApplicationUser inputUser = new ApplicationUser();
-        inputUser.setEmail("another-user@example.com");
+        inputUser.setEmail("blabla@example.com");
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 

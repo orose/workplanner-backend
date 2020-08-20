@@ -3,6 +3,7 @@ package no.roseweb.workplanner.controllers;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.OrganizationUserListResponse;
+import no.roseweb.workplanner.models.Role;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.mockito.Mockito.when;
@@ -39,6 +41,7 @@ public class OrganizationControllerTest extends BaseControllerTest {
         organization.setOrganizationNumber("1234");
 
         ApplicationUser user = new ApplicationUser();
+        user.setId(2L);
         user.setOrganizationId(1L);
         user.setEmail("test@test.com");
         user.setFirstname("Firstname");
