@@ -13,7 +13,7 @@ pipeline {
                 SPRING_DATASOURCE_URL = "jdbc:postgresql://10.0.0.4:5432/test_jenkins_workplanner"
             }
             steps {
-                sh 'mvn test -Dspring.datasource.url=${env.SPRING_DATASOURCE_URL} -Dspring.datasource.username=${env.WORKPLANNER_TEST_DB_USR} -Dspring.datasource.password=${env.WORKPLANNER_TEST_DB_PSW}'
+                sh "mvn test -Dspring.datasource.url=${env.SPRING_DATASOURCE_URL} -Dspring.datasource.username=${env.WORKPLANNER_TEST_DB_USR} -Dspring.datasource.password=${env.WORKPLANNER_TEST_DB_PSW}"
             }
         }
         stage('JaCoCo') {
