@@ -19,8 +19,8 @@ public interface WorkorderService {
     Integer countAll(Long organizationId);
 
     @PreAuthorize("hasPermission(#workorder, 'edit')")
-    Integer assignUser(Workorder workorder, String userId);
+    Integer assignUser(Workorder workorder, Long userId);
 
     @PreAuthorize("hasPermission(#workorder, 'edit')")
-    Integer unassignUser(Workorder workorder, String userId);
+    Integer unassignUser(Workorder workorder, Long userId);
 }

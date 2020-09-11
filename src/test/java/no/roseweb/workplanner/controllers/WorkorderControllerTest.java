@@ -62,8 +62,8 @@ public class WorkorderControllerTest extends BaseControllerTest {
         when(workorderService.countAll(ArgumentMatchers.any())).thenReturn(123);
         when(userService.findByEmail(ArgumentMatchers.anyString())).thenReturn(user);
 
-        when(workorderService.assignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyString())).thenReturn(1);
-        when(workorderService.unassignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyString())).thenReturn(1);
+        when(workorderService.assignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyLong())).thenReturn(1);
+        when(workorderService.unassignUser(ArgumentMatchers.any(Workorder.class), ArgumentMatchers.anyLong())).thenReturn(1);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void assignWorkorder() throws Exception {
-        mvc.perform(post(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "test@email.com")
+        mvc.perform(post(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(
@@ -194,7 +194,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void unassignWorkorder() throws Exception {
-        mvc.perform(delete(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "test@email.com")
+        mvc.perform(delete(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(

@@ -49,12 +49,12 @@ public class WorkorderServiceImpl implements WorkorderService {
     }
 
     @Override
-    public Integer assignUser(Workorder workorder, String userId) {
+    public Integer assignUser(Workorder workorder, Long userId) {
         return userWorkorderRepository.addAssignment(userId, workorder.getId());
     }
 
     @Override
-    public Integer unassignUser(Workorder workorder, String userId) {
+    public Integer unassignUser(Workorder workorder, Long userId) {
         return userWorkorderRepository.removeAssignment(userId, workorder.getId());
     }
 }

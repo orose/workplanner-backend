@@ -97,7 +97,7 @@ public class WorkorderController {
     @PostMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
     public Workorder assignWorkorder(
             @PathVariable Long id,
-            @PathVariable String userId,
+            @PathVariable Long userId,
             HttpServletResponse response
     ) {
         LOG.info("Assign workorder. Id={}, UserId={}", id, userId);
@@ -114,7 +114,7 @@ public class WorkorderController {
     @DeleteMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
     public Workorder unassignWorkorder(
             @PathVariable Long id,
-            @PathVariable String userId,
+            @PathVariable Long userId,
             HttpServletResponse response
     ) {
         LOG.info("Unassign workorder. Id={}, UserId={}", id, userId);

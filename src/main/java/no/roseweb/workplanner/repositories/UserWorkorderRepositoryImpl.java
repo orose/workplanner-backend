@@ -15,8 +15,8 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
     }
 
     @Override
-    public Integer addAssignment(String userId, Long workorderId) {
-        if (userId == null || userId.isEmpty()) {
+    public Integer addAssignment(Long userId, Long workorderId) {
+        if (userId == null) {
             throw new IllegalArgumentException("Cannot assign user to workorder. Missing parameter userId.");
         }
         if (workorderId == null || workorderId < 0) {
@@ -26,7 +26,7 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
             return 1;
         }
         String sql = "insert into user_workorder "
-                + "(user_email, workorder_id) "
+                + "(user_id, workorder_id) "
                 + "values "
                 + "(:userId, :workorderId)";
 
@@ -38,15 +38,15 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
     }
 
     @Override
-    public Integer removeAssignment(String userId, Long workorderId) {
-        if (userId == null || userId.isEmpty()) {
+    public Integer removeAssignment(Long userId, Long workorderId) {
+        if (userId == null) {
             throw new IllegalArgumentException("Cannot remove assignment. Missing parameter userId.");
         }
         if (workorderId == null || workorderId < 0) {
             throw new IllegalArgumentException("Cannot remove assignment. Invalid parameter workorderId.");
         }
         String sql = "delete from user_workorder "
-                + "where user_email = :userId "
+                + "where user_id = :userId "
                 + "and workorder_id = :workorderId ";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
@@ -70,8 +70,8 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
         return namedParameterJdbcTemplate.update(sql, parameters);
     }
 
-    private boolean assignmentExists(Long workorderId, String userId) {
-        if (userId == null || userId.isEmpty()) {
+    private boolean assignmentExists(Long workorderId, Long userId) {
+        if (userId == null) {
             throw new IllegalArgumentException("Missing parameter userId.");
         }
         if (workorderId == null || workorderId < 0) {
@@ -79,7 +79,7 @@ public class UserWorkorderRepositoryImpl implements UserWorkorderRepository {
         }
         String sql = "select count(*) "
             + "from user_workorder "
-            + "where user_email = :userId "
+            + "where user_id = :userId "
             + "and workorder_id = :workorderId";
 
         SqlParameterSource parameters = new MapSqlParameterSource()

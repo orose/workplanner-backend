@@ -1,7 +1,7 @@
 package no.roseweb.workplanner.repositories;
 
 public interface UserWorkorderRepository {
-    Integer addAssignment(String userId, Long workorderId);
-    Integer removeAssignment(String userId, Long workorderId);
+    Integer addAssignment(Long userId, Long workorderId);
+    Integer removeAssignment(Long userId, Long workorderId);
     Integer removeAllAssignments(Long workorderId);
 }

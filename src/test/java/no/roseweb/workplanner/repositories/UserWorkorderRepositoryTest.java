@@ -24,33 +24,33 @@ public class UserWorkorderRepositoryTest {
     @Test
     public void testAddAssignment() {
         UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
-        Integer affectedRows = userWorkorderRepository.addAssignment("test@email.com", 1L);
+        Integer affectedRows = userWorkorderRepository.addAssignment(1L, 1L);
         assertThat(affectedRows).isEqualTo(1);
     }
 
     @Test
     public void testAssignSameUserTwiceShouldNotFail() {
         UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
-        userWorkorderRepository.addAssignment("test@email.com", 1L);
-        Integer affectedRows = userWorkorderRepository.addAssignment("test@email.com", 1L);
+        userWorkorderRepository.addAssignment(1L, 1L);
+        Integer affectedRows = userWorkorderRepository.addAssignment(1L, 1L);
         assertThat(affectedRows).isEqualTo(1);
     }
 
     @Test
     public void testRemoveAssignment() {
         UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
-        Integer rows = userWorkorderRepository.removeAssignment("test@email.com", 1L);
+        Integer rows = userWorkorderRepository.removeAssignment(1L, 1L);
         assertThat(rows).isEqualTo(1);
 
-        rows = userWorkorderRepository.removeAssignment("test@email.com", 1L);
+        rows = userWorkorderRepository.removeAssignment(1L, 1L);
         assertThat(rows).isEqualTo(0);
     }
 
     @Test
     public void testRemoveNonexistingAssignmentShouldReturnZeroUpdatedRows() {
         UserWorkorderRepository userWorkorderRepository = new UserWorkorderRepositoryImpl(namedParameterJdbcTemplate);
-        userWorkorderRepository.removeAssignment("test@email.com", 99999L);
-        Integer rows = userWorkorderRepository.removeAssignment("test@email.com", 99999L);
+        userWorkorderRepository.removeAssignment(1L, 99999L);
+        Integer rows = userWorkorderRepository.removeAssignment(1L, 99999L);
 
         assertThat(rows).isEqualTo(0);
     }

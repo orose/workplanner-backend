@@ -99,7 +99,7 @@ public class WorkorderServiceTest {
         ApplicationUser user = new ApplicationUser();
         user.setOrganizationId(1L);
 
-        Integer rows = service.assignUser(workorder, "test@email.com");
+        Integer rows = service.assignUser(workorder, 1L);
 
         assertThat(rows).isEqualTo(1L);
     }
@@ -115,8 +115,8 @@ public class WorkorderServiceTest {
         ApplicationUser user = new ApplicationUser();
         user.setOrganizationId(1L);
 
-        service.assignUser(workorder, "test@email.com");
-        Integer rows = service.unassignUser(workorder, "test@email.com");
+        service.assignUser(workorder, 1L);
+        Integer rows = service.unassignUser(workorder, 1L);
 
         assertThat(rows).isEqualTo(1L);
     }
