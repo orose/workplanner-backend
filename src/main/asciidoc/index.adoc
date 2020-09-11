@@ -1,4 +1,7 @@
 = Workplanner REST Api
+
+A REST api for workplanner application.
+
 :toc: left
 
 include::invite.adoc[]
