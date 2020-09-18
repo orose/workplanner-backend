@@ -1,8 +1,7 @@
 = Workplanner REST Api
+:toc: left
 
 A REST api for workplanner application.
-
-:toc: left
 
 include::invite.adoc[]
 include::organization.adoc[]
