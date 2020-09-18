@@ -2,7 +2,7 @@ package no.roseweb.workplanner.models;
 
 public class UserTeam {
     private Long id;
-    private String userEmail;
+    private Long userId;
     private Long teamId;
     private String permissionKey;
 
@@ -14,12 +14,12 @@ public class UserTeam {
         this.id = id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getTeamId() {

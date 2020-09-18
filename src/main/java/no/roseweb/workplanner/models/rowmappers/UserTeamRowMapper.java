@@ -6,13 +6,13 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserTeamRowMapper implements RowMapper {
+public class UserTeamRowMapper implements RowMapper<UserTeam> {
     @Override
-    public Object mapRow(ResultSet rs, int i) throws SQLException {
+    public UserTeam mapRow(ResultSet rs, int i) throws SQLException {
         UserTeam userTeam = new UserTeam();
 
         userTeam.setId(rs.getLong("id"));
-        userTeam.setUserEmail(rs.getString("user_email"));
+        userTeam.setUserId(rs.getLong("user_id"));
         userTeam.setTeamId(rs.getLong("team_id"));
         userTeam.setPermissionKey(rs.getString("permission_key"));
 

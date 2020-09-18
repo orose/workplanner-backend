@@ -21,14 +21,14 @@ public class UserTeamRepositoryImpl implements UserTeamRepository {
     public int create(UserTeam userTeam) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         String sql = "insert into user_team ("
-            + "user_email,"
+            + "user_id,"
             + "team_id, "
             + "permission_key "
             + ") values ("
-            + ":user_email, :team_id, :permission_key)";
+            + ":user_id, :team_id, :permission_key)";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
-            .addValue("user_email", userTeam.getUserEmail())
+            .addValue("user_id", userTeam.getUserId())
             .addValue("team_id", userTeam.getTeamId())
             .addValue("permission_key", userTeam.getPermissionKey());
 
@@ -36,11 +36,11 @@ public class UserTeamRepositoryImpl implements UserTeamRepository {
     }
 
     @Override
-    public int remove(String userId, Long teamId) {
-        String sql = "delete from user_team where user_email = :user_email and team_id = :team_id";
+    public int remove(Long userId, Long teamId) {
+        String sql = "delete from user_team where user_id = :user_id and team_id = :team_id";
 
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("user_email", userId)
+                .addValue("user_id", userId)
                 .addValue("team_id", teamId);
 
         return namedParameterJdbcTemplate.update(sql, parameters);

@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         ApplicationUser createdUser = userRepository.create(user);
 
         if (createdTeam != null)  {
-            connectToTeam(createdUser.getEmail(), createdTeam.getId(), "ADMIN");
+            connectToTeam(createdUser.getId(), createdTeam.getId(), "ADMIN");
         }
 
         if (invite != null) {
@@ -75,22 +75,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int connectToTeam(String email, Long teamId, String permissionKey) {
+    public int connectToTeam(Long userId, Long teamId, String permissionKey) {
         UserTeam ut = new UserTeam();
         ut.setTeamId(teamId);
-        ut.setUserEmail(email);
+        ut.setUserId(userId);
         ut.setPermissionKey(permissionKey);
 
         return userTeamRepository.create(ut);
     }
 
     @Override
-    public void disconnectFromTeam(String email, Long teamId) {
+    public void disconnectFromTeam(Long userId, Long teamId) {
         UserTeam ut = new UserTeam();
         ut.setTeamId(teamId);
-        ut.setUserEmail(email);
+        ut.setUserId(userId);
 
-        userTeamRepository.remove(email, teamId);
+        userTeamRepository.remove(userId, teamId);
     }
 
     @Override

@@ -10,6 +10,6 @@ public interface UserService {
 
     @PreAuthorize("hasPermission(#organizationId, 'Organization', 'read')")
     OrganizationUserListResponse findByOrganizationId(Long organzationId, Integer offset, Integer limit);
-    int connectToTeam(String email, Long teamId, String permissionKey);
-    void disconnectFromTeam(String email, Long teamId);
+    int connectToTeam(Long userId, Long teamId, String permissionKey);
+    void disconnectFromTeam(Long userId, Long teamId);
 }

@@ -56,14 +56,14 @@ public class ApplicationUserTeamRepositoryTest {
         Team team = teamRepository.create(t);
 
         UserTeam ut = new UserTeam();
-        ut.setUserEmail(createdUser.getEmail());
+        ut.setUserId(createdUser.getId());
         ut.setPermissionKey("ADMIN");
         ut.setTeamId(team.getId());
         int affectedRows = userTeamRepository.create(ut);
 
         assertThat(affectedRows).isEqualTo(1);
 
-        affectedRows = userTeamRepository.remove(createdUser.getEmail(), team.getId());
+        affectedRows = userTeamRepository.remove(createdUser.getId(), team.getId());
         assertThat(affectedRows).isEqualTo(1);
     }
 
