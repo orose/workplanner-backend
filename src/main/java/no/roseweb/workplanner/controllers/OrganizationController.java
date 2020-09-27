@@ -37,8 +37,8 @@ public class OrganizationController {
     @GetMapping(value = RestPath.ORGANIZATION_USER)
     public OrganizationUserListResponse getOrganizationUsers(
         @PathVariable Long id,
-        @RequestParam Integer offset,
-        @RequestParam Integer limit,
+        @RequestParam(defaultValue = "0") Integer offset,
+        @RequestParam(defaultValue = "10") Integer limit,
         HttpServletResponse servletResponse
     ) {
         LOG.info("Get users for organization with id={}", id);
