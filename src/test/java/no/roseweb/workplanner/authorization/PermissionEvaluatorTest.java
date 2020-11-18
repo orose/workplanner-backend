@@ -28,6 +28,10 @@ public class PermissionEvaluatorTest {
     private PermissionEvaluator evaluator;
     private static final String PERMISSION_EDIT = "edit";
     private static final String PERMISSION_READ = "read";
+    private static final String WORKORDER = "Workorder";
+    private static final String ORGANIZATION = "Organization";
+
+    private static final String USERNAME = "test@user.com";
 
     @MockBean
     UserService userService;
@@ -45,15 +49,14 @@ public class PermissionEvaluatorTest {
 
     @Test
     public void testWorkorderPermissionDeniedForObjectNotBelongingOrganization () {
-        String username = "test@user.com";
         long organizationId = 1L;
         long workorderId = 2L;
 
-        ApplicationUser user = buildUser(username, organizationId);
+        ApplicationUser user = buildUser(USERNAME, organizationId);
         Workorder workorder = buildWorkorder(workorderId, organizationId + 2L);
-        Authentication auth = buildAuthentication(username);
+        Authentication auth = buildAuthentication(USERNAME);
 
-        when(userService.findByEmail(username)).thenReturn(user);
+        when(userService.findByEmail(USERNAME)).thenReturn(user);
         when(workorderRepository.findById(workorderId)).thenReturn(workorder);
 
         Boolean result = evaluator.hasPermission(auth, workorder, PERMISSION_EDIT);
@@ -61,19 +64,24 @@ public class PermissionEvaluatorTest {
 
         Boolean result2 = evaluator.hasPermission(auth, workorder, PERMISSION_READ);
         assertThat(result2).isEqualTo(false);
+
+        Boolean result3 = evaluator.hasPermission(auth, workorderId, WORKORDER, PERMISSION_EDIT);
+        assertThat(result3).isEqualTo(false);
+
+        Boolean result4 = evaluator.hasPermission(auth, workorderId, WORKORDER, PERMISSION_READ);
+        assertThat(result4).isEqualTo(false);
     }
 
     @Test
     public void testWorkorderPermissionGrantedForObjectBelongingToOrganization () {
-        String username = "test@user.com";
         long organizationId = 1L;
         long workorderId = 2L;
 
-        ApplicationUser user = buildUser(username, organizationId);
+        ApplicationUser user = buildUser(USERNAME, organizationId);
         Workorder workorder = buildWorkorder(workorderId, organizationId);
-        Authentication auth = buildAuthentication(username);
+        Authentication auth = buildAuthentication(USERNAME);
 
-        when(userService.findByEmail(username)).thenReturn(user);
+        when(userService.findByEmail(USERNAME)).thenReturn(user);
         when(workorderRepository.findById(workorderId)).thenReturn(workorder);
 
         Boolean result = evaluator.hasPermission(auth, workorder, PERMISSION_EDIT);
@@ -81,59 +89,89 @@ public class PermissionEvaluatorTest {
 
         Boolean result2 = evaluator.hasPermission(auth, workorder, PERMISSION_READ);
         assertThat(result2).isEqualTo(true);
+
+        Boolean result3 = evaluator.hasPermission(auth, workorderId, WORKORDER, PERMISSION_EDIT);
+        assertThat(result3).isEqualTo(false);
+
+        Boolean result4 = evaluator.hasPermission(auth, workorderId, WORKORDER, PERMISSION_READ);
+        assertThat(result4).isEqualTo(true);
     }
 
     @Test
     public void testOrganizationPermissionGrantedForObjectBelongingToOrganization () {
-        String username = "test@user.com";
         long organizationId = 1L;
 
-        ApplicationUser user = buildUser(username, organizationId);
-        Authentication auth = buildAuthentication(username);
+        ApplicationUser user = buildUser(USERNAME, organizationId);
+        Authentication auth = buildAuthentication(USERNAME);
         Organization organization = buildOrganization(organizationId);
 
-        when(userService.findByEmail(username)).thenReturn(user);
+        when(userService.findByEmail(USERNAME)).thenReturn(user);
+        when(organizationRepository.findById(organizationId)).thenReturn(organization);
 
         Boolean result = evaluator.hasPermission(auth, organization, PERMISSION_EDIT);
         assertThat(result).isEqualTo(true);
 
         Boolean result2 = evaluator.hasPermission(auth, organization, PERMISSION_READ);
         assertThat(result2).isEqualTo(true);
+
+        Boolean result3 = evaluator.hasPermission(auth, organizationId, ORGANIZATION, PERMISSION_EDIT);
+        assertThat(result3).isEqualTo(false);
+
+        Boolean result4 = evaluator.hasPermission(auth, organizationId, ORGANIZATION, PERMISSION_READ);
+        assertThat(result4).isEqualTo(true);
     }
 
     @Test
     public void testOrganizationPermissionDeniedForObjectNotBelongingOrganization () {
-        String username = "test@user.com";
         long organizationId = 1L;
-        long workorderId = 2L;
 
-        ApplicationUser user = buildUser(username, organizationId);
+        ApplicationUser user = buildUser(USERNAME, organizationId);
         Organization organization = buildOrganization(organizationId + 1L);
-        Authentication auth = buildAuthentication(username);
+        Authentication auth = buildAuthentication(USERNAME);
 
-        when(userService.findByEmail(username)).thenReturn(user);
+        when(userService.findByEmail(USERNAME)).thenReturn(user);
+        when(organizationRepository.findById(organizationId)).thenReturn(organization);
 
         Boolean result = evaluator.hasPermission(auth, organization, PERMISSION_EDIT);
         assertThat(result).isEqualTo(false);
 
         Boolean result2 = evaluator.hasPermission(auth, organization, PERMISSION_READ);
         assertThat(result2).isEqualTo(false);
+
+        Boolean result3 = evaluator.hasPermission(auth, organizationId, ORGANIZATION, PERMISSION_EDIT);
+        assertThat(result3).isEqualTo(false);
+
+        Boolean result4 = evaluator.hasPermission(auth, organizationId, ORGANIZATION, PERMISSION_READ);
+        assertThat(result4).isEqualTo(false);
     }
 
     @Test
     public void testPermissionDeniedForUnknownPermission () {
-        String username = "test@user.com";
         long organizationId = 1L;
         long workorderId = 2L;
 
-        ApplicationUser user = buildUser(username, organizationId);
+        ApplicationUser user = buildUser(USERNAME, organizationId);
         Workorder workorder = buildWorkorder(workorderId, organizationId);
-        Authentication auth = buildAuthentication(username);
+        Authentication auth = buildAuthentication(USERNAME);
 
-        when(userService.findByEmail(username)).thenReturn(user);
+        when(userService.findByEmail(USERNAME)).thenReturn(user);
         when(workorderRepository.findById(workorderId)).thenReturn(workorder);
 
         Boolean result = evaluator.hasPermission(auth, workorder, "unknownPermission");
+        Boolean result2 = evaluator.hasPermission(auth, workorderId, WORKORDER, "unknownPermission");
+
+        assertThat(result).isEqualTo(false);
+        assertThat(result2).isEqualTo(false);
+    }
+
+    @Test
+    public void testPermissionDeniedForUnknownTargetType () {
+        long workorderId = 2L;
+
+        Authentication auth = buildAuthentication(USERNAME);
+
+        Boolean result = evaluator.hasPermission(auth, workorderId, "unknownTargetType", PERMISSION_READ);
+
         assertThat(result).isEqualTo(false);
     }
 

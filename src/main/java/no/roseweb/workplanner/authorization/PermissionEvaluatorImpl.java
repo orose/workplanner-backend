@@ -15,8 +15,8 @@ import java.io.Serializable;
 @Component
 public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements PermissionEvaluator {
 
-    private WorkorderRepository workorderRepository;
-    private OrganizationRepository organizationRepository;
+    private final WorkorderRepository workorderRepository;
+    private final OrganizationRepository organizationRepository;
 
     private static final String PERMISSION_EDIT = "edit";
     private static final String PERMISSION_READ = "read";
@@ -80,7 +80,8 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
             return false;
         }
         Organization organization = organizationRepository.findById(id);
-        return user.getOrganizationId().equals(organization.getId());
+        return organization != null
+            && user.getOrganizationId().equals(organization.getId());
     }
 
     private Boolean evaluateWorkorderRead(ApplicationUser user, Long id) {
@@ -88,6 +89,7 @@ public class PermissionEvaluatorImpl extends PermissionEvaluatorBase implements 
             return false;
         }
         Workorder workorder = workorderRepository.findById(id);
-        return user.getOrganizationId().equals(workorder.getOrganizationId());
+        return workorder != null
+            && user.getOrganizationId().equals(workorder.getOrganizationId());
     }
 }
