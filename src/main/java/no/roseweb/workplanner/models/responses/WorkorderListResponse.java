@@ -1,4 +1,6 @@
-package no.roseweb.workplanner.models;
+package no.roseweb.workplanner.models.responses;
+
+import no.roseweb.workplanner.models.Workorder;
 
 import java.util.List;
 

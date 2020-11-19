@@ -11,9 +11,9 @@ public final class RestPath {
     static final String ORGANIZATION_USER = "/organization/{id}/user";
     public static final String REGISTER = "/register";
     public static final String LOGIN = "/login";
-    static final String WORKORDER = "/workorder";
-    static final String WORKORDER_ID = "/workorder/{id}";
-    static final String WORKORDER_ASSIGN = "/workorder/{id}/assign/{userId}";
+    static final String WORKORDERS = "/workorders";
+    static final String WORKORDERS_ID = "/workorders/{id}";
+    static final String WORKORDERS_ASSIGN = "/workorders/{id}/assign/{userId}";
 
     private RestPath() {
     }

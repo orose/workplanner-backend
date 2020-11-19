@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -69,21 +73,15 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void createNewWorkorder() throws Exception {
-        mvc.perform(post(RestPath.API + RestPath.WORKORDER)
+        mvc.perform(post(RestPath.API + RestPath.WORKORDERS)
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}"))
         .andExpect(status().isCreated())
+        .andExpect(header().exists(HttpHeaders.LOCATION))
         .andDo(
             document("workorder-post",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-                responseFields(
-                    fieldWithPath("id").description(""),
-                    fieldWithPath("description").description(""),
-                    fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description(""),
-                    fieldWithPath("status").description(""),
-                    fieldWithPath("organizationId").description("")
-                )
+                responseHeaders(headerWithName(HttpHeaders.LOCATION).description("Url to the newly created object"))
             )
         );
     }
@@ -91,19 +89,19 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void getWorkorder() throws Exception {
-        mvc.perform(get(RestPath.API + RestPath.WORKORDER_ID, "1")
+        mvc.perform(get(RestPath.API + RestPath.WORKORDERS_ID, "1")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(
             document("workorder-get",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                 responseFields(
-                    fieldWithPath("id").description(""),
-                    fieldWithPath("description").description(""),
-                    fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description(""),
-                    fieldWithPath("status").description(""),
-                    fieldWithPath("organizationId").description("")
+                    fieldWithPath("data.id").description(""),
+                    fieldWithPath("data.description").description(""),
+                    fieldWithPath("data.title").description(""),
+                    fieldWithPath("data.teamId").description(""),
+                    fieldWithPath("data.status").description(""),
+                    fieldWithPath("data.organizationId").description("")
                 )
             )
         );
@@ -112,7 +110,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void updateWorkorder() throws Exception {
-        mvc.perform(put(RestPath.API + RestPath.WORKORDER_ID, "1")
+        mvc.perform(put(RestPath.API + RestPath.WORKORDERS_ID, "1")
         .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1,\"organizationId\":1}")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -120,12 +118,12 @@ public class WorkorderControllerTest extends BaseControllerTest {
             document("workorder-update",
                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                 responseFields(
-                    fieldWithPath("id").description(""),
-                    fieldWithPath("description").description(""),
-                    fieldWithPath("title").description(""),
-                    fieldWithPath("teamId").description(""),
-                    fieldWithPath("status").description(""),
-                    fieldWithPath("organizationId").description("")
+                    fieldWithPath("data.id").description(""),
+                    fieldWithPath("data.description").description(""),
+                    fieldWithPath("data.title").description(""),
+                    fieldWithPath("data.teamId").description(""),
+                    fieldWithPath("data.status").description(""),
+                    fieldWithPath("data.organizationId").description("")
                 )
             )
         );
@@ -134,7 +132,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void updateWorkorderNotFound() throws Exception {
-        mvc.perform(put(RestPath.WORKORDER_ID, "2")
+        mvc.perform(put(RestPath.WORKORDERS_ID, "2")
         .content("{\"title\":\"title\",\"description\":\"description\",\"teamId\":1}")
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound());
@@ -143,7 +141,7 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void workorderList() throws Exception {
-        mvc.perform(get(RestPath.API + RestPath.WORKORDER)
+        mvc.perform(get(RestPath.API + RestPath.WORKORDERS)
         .param("offset", "0")
         .param("limit", "1")
         .contentType(MediaType.APPLICATION_JSON))
@@ -173,19 +171,19 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void assignWorkorder() throws Exception {
-        mvc.perform(post(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "1")
+        mvc.perform(post(RestPath.API + RestPath.WORKORDERS_ASSIGN, "1", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(
                         document("workorder-assign",
                                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 responseFields(
-                                        fieldWithPath("id").description(""),
-                                        fieldWithPath("description").description(""),
-                                        fieldWithPath("title").description(""),
-                                        fieldWithPath("teamId").description(""),
-                                        fieldWithPath("status").description(""),
-                                        fieldWithPath("organizationId").description("")
+                                        fieldWithPath("data.id").description(""),
+                                        fieldWithPath("data.description").description(""),
+                                        fieldWithPath("data.title").description(""),
+                                        fieldWithPath("data.teamId").description(""),
+                                        fieldWithPath("data.status").description(""),
+                                        fieldWithPath("data.organizationId").description("")
                                 )
                         )
                 );
@@ -194,19 +192,19 @@ public class WorkorderControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void unassignWorkorder() throws Exception {
-        mvc.perform(delete(RestPath.API + RestPath.WORKORDER_ASSIGN, "1", "1")
+        mvc.perform(delete(RestPath.API + RestPath.WORKORDERS_ASSIGN, "1", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(
                         document("workorder-unassign",
                                 preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                                 responseFields(
-                                        fieldWithPath("id").description(""),
-                                        fieldWithPath("description").description(""),
-                                        fieldWithPath("title").description(""),
-                                        fieldWithPath("teamId").description(""),
-                                        fieldWithPath("status").description(""),
-                                        fieldWithPath("organizationId").description("")
+                                        fieldWithPath("data.id").description(""),
+                                        fieldWithPath("data.description").description(""),
+                                        fieldWithPath("data.title").description(""),
+                                        fieldWithPath("data.teamId").description(""),
+                                        fieldWithPath("data.status").description(""),
+                                        fieldWithPath("data.organizationId").description("")
                                 )
                         )
                 );
