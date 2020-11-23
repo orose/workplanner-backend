@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,11 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InviteRepositoryTest {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Test
     public void CrudFunctionality() {
-        OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
+        OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(jdbcTemplate);
 
         Organization organization = new Organization();
         organization.setName("organization name");
@@ -45,9 +44,12 @@ public class InviteRepositoryTest {
         Invite fetchedInvite = inviteRepository.findByEmail("test@email.com");
         assertThat(fetchedInvite).isNotNull();
 
-        List<Invite> inviteArrayList = inviteRepository.findAllByOrganizationId(1L);
+        List<Invite> inviteArrayList = inviteRepository.findAllByOrganizationId(1L, 0, 10);
         assertThat(inviteArrayList).isNotEmpty();
         assertThat(inviteArrayList.get(0).getOrganizationId()).isEqualTo(1L);
+
+        Integer count = inviteRepository.countAll(1L);
+        assertThat(count).isEqualTo(2);
 
         inviteRepository.delete(fetchedInvite.getEmail());
         assertThat(inviteRepository.findByEmail("test@email.com")).isNull();

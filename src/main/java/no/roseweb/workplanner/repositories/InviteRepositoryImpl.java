@@ -2,9 +2,9 @@ package no.roseweb.workplanner.repositories;
 
 import no.roseweb.workplanner.models.Invite;
 import no.roseweb.workplanner.models.rowmappers.InviteRowMapper;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,44 +12,61 @@ import java.util.List;
 @Repository
 public class InviteRepositoryImpl implements InviteRepository {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public InviteRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public InviteRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
-
 
     @Override
     public Invite create(Invite invite) {
-        String sql = "insert into invite (email, organization_id) values (?, ?)";
+        String sql = "insert into invite (email, organization_id) values (:email, :organization_id)";
 
-        jdbcTemplate.update(sql,
-            invite.getEmail(),
-            invite.getOrganizationId()
-        );
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("email", invite.getEmail())
+            .addValue("organization_id", invite.getOrganizationId());
+
+        namedParameterJdbcTemplate.update(sql, parameters);
 
         return this.findByEmail(invite.getEmail());
     }
 
     @Override
     public Invite findByEmail(String email) {
-        String sql = "select * from invite where email = ?";
-        Invite invite;
+        String sql = "select * from invite where email = :email";
 
-        try {
-            invite = (Invite) jdbcTemplate.queryForObject(sql, new Object[] {email}, new InviteRowMapper());
-        } catch (DataAccessException e) {
-            return null;
-        }
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("email", email);
 
-        return invite;
+        List<Invite> result = namedParameterJdbcTemplate.query(sql, parameters, new InviteRowMapper());
+
+        return result.size() > 0 ? result.get(0) : null;
     }
 
     @Override
-    public List<Invite> findAllByOrganizationId(Long organizationId) {
-        String sql = "select * from invite where organization_id = ?";
+    public List<Invite> findAllByOrganizationId(Long organizationId, Integer offset, Integer limit) {
+        String sql = "select * "
+            + "from invite "
+            + "where organization_id = :organizationId "
+            + "offset :offset "
+            + "limit :limit ";
 
-        return jdbcTemplate.query(sql, new Object[] {organizationId}, new BeanPropertyRowMapper(Invite.class));
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("organizationId", organizationId)
+                .addValue("offset", offset)
+                .addValue("limit", limit);
+
+        return namedParameterJdbcTemplate.query(sql, parameters, new InviteRowMapper());
+    }
+
+    @Override
+    public Integer countAll(Long organizationId) {
+        String sql = "select count(*) from invite where organization_id = :organizationId";
+
+        SqlParameterSource parameters = new MapSqlParameterSource()
+            .addValue("organizationId", organizationId);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, parameters, Integer.class);
     }
 
     @Override
@@ -58,8 +75,10 @@ public class InviteRepositoryImpl implements InviteRepository {
             return 0;
         }
 
-        String sql = "delete from invite where email = ?";
+        String sql = "delete from invite where email = :email";
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("email", email);
 
-        return jdbcTemplate.update(sql, email);
+        return namedParameterJdbcTemplate.update(sql, parameters);
     }
 }

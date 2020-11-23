@@ -33,13 +33,15 @@ public class ApplicationUserTeamRepositoryTest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     @Test
     public void CrudFunctionality() {
         Mockito.when(bCryptPasswordEncoder.encode(ArgumentMatchers.any())).thenReturn("password");
         UserRepository userRepository = new UserRepositoryImpl(jdbcTemplate, bCryptPasswordEncoder);
         OrganizationRepository organizationRepository = new OrganizationRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
         UserTeamRepository userTeamRepository = new UserTeamRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
-        InviteRepositoryImpl inviteRepository = new InviteRepositoryImpl(jdbcTemplate);
+        InviteRepositoryImpl inviteRepository = new InviteRepositoryImpl(namedParameterJdbcTemplate);
         TeamRepositoryImpl teamRepository = new TeamRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
 
         ApplicationUser inputUser = new ApplicationUser();

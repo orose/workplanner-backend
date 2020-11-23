@@ -6,9 +6,9 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class InviteRowMapper implements RowMapper {
+public class InviteRowMapper implements RowMapper<Invite> {
     @Override
-    public Object mapRow(ResultSet rs, int i) throws SQLException {
+    public Invite mapRow(ResultSet rs, int i) throws SQLException {
         Invite invite = new Invite();
 
         invite.setEmail(rs.getString("email"));

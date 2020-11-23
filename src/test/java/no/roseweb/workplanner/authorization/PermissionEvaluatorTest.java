@@ -3,6 +3,7 @@ package no.roseweb.workplanner.authorization;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.Workorder;
+import no.roseweb.workplanner.repositories.InviteRepository;
 import no.roseweb.workplanner.repositories.OrganizationRepository;
 import no.roseweb.workplanner.repositories.WorkorderRepository;
 import no.roseweb.workplanner.services.UserService;
@@ -42,9 +43,12 @@ public class PermissionEvaluatorTest {
     @MockBean
     OrganizationRepository organizationRepository;
 
+    @MockBean
+    InviteRepository inviteRepository;
+
     @Before
     public void init() {
-        evaluator = new PermissionEvaluatorImpl(userService, workorderRepository, organizationRepository);
+        evaluator = new PermissionEvaluatorImpl(userService, workorderRepository, organizationRepository, inviteRepository);
     }
 
     @Test
