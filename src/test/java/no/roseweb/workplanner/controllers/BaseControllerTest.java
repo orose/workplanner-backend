@@ -8,6 +8,7 @@ import no.roseweb.workplanner.security.CustomAccessDeniedHandler;
 import no.roseweb.workplanner.security.MySavedRequestAwareAuthenticationSuccessHandler;
 import no.roseweb.workplanner.security.RestAuthenticationEntryPoint;
 import no.roseweb.workplanner.services.InviteService;
+import no.roseweb.workplanner.services.OrganizationService;
 import no.roseweb.workplanner.services.UserService;
 import no.roseweb.workplanner.services.WorkorderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +54,7 @@ class BaseControllerTest {
 
     @MockBean
     InviteService inviteService;
+
+    @MockBean
+    OrganizationService organizationService;
 }

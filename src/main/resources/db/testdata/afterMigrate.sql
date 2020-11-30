@@ -16,3 +16,5 @@ insert into invite values ('user@email.com', 1);
 insert into workorder (title, description, status, organization_id, created_at, created_by, updated_at, updated_by)
 values
 ('title', 'description', 'NEW', 1, now(), 1, now(), 1);
+
+insert into organization (name, email, organization_number) values ('Organization name2', 'email@organization2.com', 246810);

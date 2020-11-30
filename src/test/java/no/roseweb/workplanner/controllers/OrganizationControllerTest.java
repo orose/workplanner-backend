@@ -3,7 +3,6 @@ package no.roseweb.workplanner.controllers;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
 import no.roseweb.workplanner.models.OrganizationUserListResponse;
-import no.roseweb.workplanner.models.Role;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.mockito.Mockito.when;
@@ -53,7 +51,7 @@ public class OrganizationControllerTest extends BaseControllerTest {
         userlist.setTotal(0);
         userlist.setData(Collections.singletonList(user));
 
-        when(organizationRepository.findById(ArgumentMatchers.anyLong())).thenReturn(organization);
+        when(organizationService.findById(ArgumentMatchers.anyLong())).thenReturn(organization);
         when(userService.findByOrganizationId(
             ArgumentMatchers.anyLong(),
             ArgumentMatchers.eq(0),
@@ -64,17 +62,17 @@ public class OrganizationControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser
     public void getShouldReturnOrganization() throws Exception {
-        mvc.perform(get(RestPath.ORGANIZATION_ID,"1")
+        mvc.perform(get(RestPath.ORGANIZATIONS_ID,"1")
             .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk())
             .andDo(
                 document("organization-get",
                         preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
                         responseFields(
-                                fieldWithPath("id").description(""),
-                                fieldWithPath("email").description(""),
-                                fieldWithPath("name").description(""),
-                                fieldWithPath("organizationNumber").description("")
+                                fieldWithPath("data.id").description(""),
+                                fieldWithPath("data.email").description(""),
+                                fieldWithPath("data.name").description(""),
+                                fieldWithPath("data.organizationNumber").description("")
                         )
                 )
         );
