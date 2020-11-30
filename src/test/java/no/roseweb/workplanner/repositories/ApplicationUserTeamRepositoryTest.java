@@ -3,6 +3,8 @@ package no.roseweb.workplanner.repositories;
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Team;
 import no.roseweb.workplanner.models.UserTeam;
+import no.roseweb.workplanner.services.OrganizationService;
+import no.roseweb.workplanner.services.OrganizationServiceImpl;
 import no.roseweb.workplanner.services.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,12 +46,14 @@ public class ApplicationUserTeamRepositoryTest {
         InviteRepositoryImpl inviteRepository = new InviteRepositoryImpl(namedParameterJdbcTemplate);
         TeamRepositoryImpl teamRepository = new TeamRepositoryImpl(new NamedParameterJdbcTemplate(jdbcTemplate));
 
+        OrganizationService organizationService = new OrganizationServiceImpl(organizationRepository);
+
         ApplicationUser inputUser = new ApplicationUser();
         inputUser.setEmail("another-user@example.com");
         inputUser.setFirstname("Firstname");
         inputUser.setLastname("Lastname");
 
-        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
+        UserServiceImpl userService = new UserServiceImpl(inviteRepository, organizationService, teamRepository, userRepository, userTeamRepository);
         ApplicationUser createdUser = userService.create(inputUser);
 
         Team t = new Team();

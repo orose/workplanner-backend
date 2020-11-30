@@ -1,0 +1,10 @@
+== Users
+
+=== Get list
+
+.request
+include::{snippets}/userlist-get/http-request.adoc[]
+
+.response
+include::{snippets}/userlist-get/http-response.adoc[]
+

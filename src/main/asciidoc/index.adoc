@@ -5,6 +5,7 @@ A REST api for workplanner application.
 
 include::invite.adoc[]
 include::organization.adoc[]
+include::user.adoc[]
 include::register.adoc[]
 include::workorder.adoc[]
 include::userinfo.adoc[]

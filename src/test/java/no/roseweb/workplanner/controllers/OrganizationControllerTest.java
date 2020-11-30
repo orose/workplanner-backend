@@ -2,7 +2,7 @@ package no.roseweb.workplanner.controllers;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.OrganizationUserListResponse;
+import no.roseweb.workplanner.models.responses.UserListResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +45,7 @@ public class OrganizationControllerTest extends BaseControllerTest {
         user.setFirstname("Firstname");
         user.setLastname("Lastname");
 
-        OrganizationUserListResponse userlist = new OrganizationUserListResponse();
+        UserListResponse userlist = new UserListResponse();
         userlist.setOffset(0);
         userlist.setLimit(10);
         userlist.setTotal(0);

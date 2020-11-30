@@ -1,8 +1,10 @@
-package no.roseweb.workplanner.models;
+package no.roseweb.workplanner.models.responses;
+
+import no.roseweb.workplanner.models.ApplicationUser;
 
 import java.util.List;
 
-public class OrganizationUserListResponse {
+public class UserListResponse {
     private Integer offset;
     private Integer limit;
     private Integer total;

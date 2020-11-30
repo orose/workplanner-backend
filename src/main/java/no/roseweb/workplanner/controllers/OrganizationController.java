@@ -1,8 +1,8 @@
 package no.roseweb.workplanner.controllers;
 
 import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.OrganizationUserListResponse;
 import no.roseweb.workplanner.models.responses.OrganizationResponse;
+import no.roseweb.workplanner.models.responses.UserListResponse;
 import no.roseweb.workplanner.repositories.OrganizationRepository;
 import no.roseweb.workplanner.services.OrganizationService;
 import no.roseweb.workplanner.services.UserService;
@@ -46,7 +46,7 @@ public class OrganizationController {
     }
 
     @GetMapping(value = RestPath.ORGANIZATION_USER)
-    public OrganizationUserListResponse getOrganizationUsers(
+    public UserListResponse getOrganizationUsers(
         @PathVariable Long id,
         @RequestParam(defaultValue = "0") Integer offset,
         @RequestParam(defaultValue = "10") Integer limit,
@@ -54,7 +54,7 @@ public class OrganizationController {
     ) {
         LOG.info("Get users for organization with id={}", id);
 
-        OrganizationUserListResponse response = userService.findByOrganizationId(id, offset, limit);
+        UserListResponse response = userService.findByOrganizationId(id, offset, limit);
 
         servletResponse.setStatus(HttpServletResponse.SC_OK);
 
