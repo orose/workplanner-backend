@@ -1,0 +1,57 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11-jdk
+      - image: circleci/postgres:11
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_PASSWORD: seCirclecret
+          POSTGRES_DB: workplanner_test
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: Install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+      - restore_cache:
+          keys:
+            - workplanner-backend-{{ checksum "pom.xml" }}
+            - workplanner-backend-
+
+      - run:
+          name: Pull dependencies
+          command: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: workplanner-backend-{{ checksum "pom.xml" }}
+
+      - run:
+          name: Run tests
+          command: mvn test -Dspring.datasource.url=$SPRING_DATASOURCE_URL -Dspring.datasource.username=$SPRING_DATASOURCE_USERNAME -Dspring.datasource.password=$SPRING_DATASOURCE_PASSWORD
+          environment:
+            SPRING_DATASOURCE_URL: "jdbc:postgresql://localhost:5432/workplanner_test?sslmode=disable"
+            SPRING_DATASOURCE_USERNAME: "circleci"
+            SPRING_DATASOURCE_PASSWORD: "seCirclecret"
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+
+      - store_artifacts:
+          path: ~/test-results/junit
