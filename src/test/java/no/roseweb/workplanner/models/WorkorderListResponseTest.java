@@ -1,5 +1,6 @@
 package no.roseweb.workplanner.models;
 
+import no.roseweb.workplanner.models.responses.WorkorderListResponse;
 import org.junit.Test;
 
 import java.util.ArrayList;

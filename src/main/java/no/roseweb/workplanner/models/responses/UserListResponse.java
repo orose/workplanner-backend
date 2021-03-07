@@ -1,12 +1,14 @@
-package no.roseweb.workplanner.models;
+package no.roseweb.workplanner.models.responses;
+
+import no.roseweb.workplanner.models.ApplicationUser;
 
 import java.util.List;
 
-public class WorkorderListResponse {
+public class UserListResponse {
     private Integer offset;
     private Integer limit;
     private Integer total;
-    private List<Workorder> data;
+    private List<ApplicationUser> data;
 
     public Integer getOffset() {
         return offset;
@@ -32,11 +34,11 @@ public class WorkorderListResponse {
         this.total = total;
     }
 
-    public List<Workorder> getData() {
+    public List<ApplicationUser> getData() {
         return data;
     }
 
-    public void setData(List<Workorder> data) {
+    public void setData(List<ApplicationUser> data) {
         this.data = data;
     }
 }

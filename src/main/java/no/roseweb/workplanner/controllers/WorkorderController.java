@@ -2,12 +2,14 @@ package no.roseweb.workplanner.controllers;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Workorder;
-import no.roseweb.workplanner.models.WorkorderListResponse;
 import no.roseweb.workplanner.models.requests.WorkorderCreateRequest;
+import no.roseweb.workplanner.models.responses.WorkorderListResponse;
+import no.roseweb.workplanner.models.responses.WorkorderResponse;
 import no.roseweb.workplanner.services.UserService;
 import no.roseweb.workplanner.services.WorkorderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import java.security.Principal;
 
 @RestController
@@ -37,17 +41,21 @@ public class WorkorderController {
         this.userService = userService;
     }
 
-    @PostMapping(value = RestPath.API + RestPath.WORKORDER)
-    public Workorder createWorkorder(@RequestBody WorkorderCreateRequest request, HttpServletResponse response) {
+    @PostMapping(value = RestPath.API + RestPath.WORKORDERS)
+    public ResponseEntity<Void> createWorkorder(@RequestBody WorkorderCreateRequest request) {
         LOG.info("Create workorder. Title={}", request.getTitle());
         Workorder createdWorkorder = workorderService.create(request, this.getCurrentUser());
 
-        response.setStatus(HttpServletResponse.SC_CREATED);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdWorkorder.getId())
+                .toUri();
 
-        return createdWorkorder;
+        return ResponseEntity.created(location).build();
     }
 
-    @GetMapping(value = RestPath.API + RestPath.WORKORDER)
+    @GetMapping(value = RestPath.API + RestPath.WORKORDERS)
     public WorkorderListResponse getWorkorderList(
         @RequestParam(defaultValue = "10") Integer limit,
         @RequestParam(defaultValue = "0") Integer offset,
@@ -69,19 +77,22 @@ public class WorkorderController {
         return result;
     }
 
-    @GetMapping(value = RestPath.API + RestPath.WORKORDER_ID)
-    public Workorder getWorkorder(@PathVariable Long id, HttpServletResponse response) {
+    @GetMapping(value = RestPath.API + RestPath.WORKORDERS_ID)
+    public WorkorderResponse getWorkorder(@PathVariable Long id, HttpServletResponse response) {
         LOG.info("Get workorder. Id={}", id);
 
         Workorder workorder = workorderService.findById(id);
 
         response.setStatus(HttpServletResponse.SC_OK);
 
-        return workorder;
+        WorkorderResponse workorderResponse = new WorkorderResponse();
+        workorderResponse.setData(workorder);
+
+        return workorderResponse;
     }
 
-    @PutMapping(value = RestPath.API + RestPath.WORKORDER_ID)
-    public Workorder updateWorkorder(
+    @PutMapping(value = RestPath.API + RestPath.WORKORDERS_ID)
+    public WorkorderResponse updateWorkorder(
             @PathVariable Long id,
             @RequestBody Workorder body, HttpServletResponse response
     ) {
@@ -91,11 +102,14 @@ public class WorkorderController {
 
         response.setStatus(HttpServletResponse.SC_OK);
 
-        return updatedWorkorder;
+        WorkorderResponse workorderResponse = new WorkorderResponse();
+        workorderResponse.setData(updatedWorkorder);
+
+        return workorderResponse;
     }
 
-    @PostMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
-    public Workorder assignWorkorder(
+    @PostMapping(value = RestPath.API + RestPath.WORKORDERS_ASSIGN)
+    public WorkorderResponse assignWorkorder(
             @PathVariable Long id,
             @PathVariable Long userId,
             HttpServletResponse response
@@ -107,12 +121,14 @@ public class WorkorderController {
         if (affectedRows == 1) {
             response.setStatus(HttpServletResponse.SC_CREATED);
         }
+        WorkorderResponse workorderResponse = new WorkorderResponse();
+        workorderResponse.setData(workorderService.findById(id));
 
-        return w;
+        return workorderResponse;
     }
 
-    @DeleteMapping(value = RestPath.API + RestPath.WORKORDER_ASSIGN)
-    public Workorder unassignWorkorder(
+    @DeleteMapping(value = RestPath.API + RestPath.WORKORDERS_ASSIGN)
+    public WorkorderResponse unassignWorkorder(
             @PathVariable Long id,
             @PathVariable Long userId,
             HttpServletResponse response
@@ -125,7 +141,10 @@ public class WorkorderController {
             response.setStatus(HttpServletResponse.SC_OK);
         }
 
-        return w;
+        WorkorderResponse workorderResponse = new WorkorderResponse();
+        workorderResponse.setData(workorderService.findById(id));
+
+        return workorderResponse;
     }
 
     private ApplicationUser getCurrentUser() {

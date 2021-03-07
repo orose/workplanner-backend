@@ -2,56 +2,58 @@
 
 === Create new
 
-.request
+==== Request
 include::{snippets}/workorder-post/http-request.adoc[]
 
-.response
+==== Response
+
 include::{snippets}/workorder-post/http-response.adoc[]
 
+.Headers
+include::{snippets}/workorder-post/response-headers.adoc[]
 
 === Get one
 
-.request
+==== Request
 include::{snippets}/workorder-get/http-request.adoc[]
 
-.response
+==== Response
 include::{snippets}/workorder-get/http-response.adoc[]
 
 
 === Get all
 
-.request
+==== Request
 include::{snippets}/workorder-getAll/http-request.adoc[]
 include::{snippets}/workorder-getAll/request-parameters.adoc[]
 
-.response
+==== Response
 include::{snippets}/workorder-getAll/http-response.adoc[]
 
 
 === Update
 
-.request
+==== Request
 include::{snippets}/workorder-update/http-request.adoc[]
 
-.response
+==== Response
 include::{snippets}/workorder-update/http-response.adoc[]
 
 
 === Assign
 
-.request
+==== Request
 include::{snippets}/workorder-assign/http-request.adoc[]
 
-.response
+==== Response
 include::{snippets}/workorder-assign/http-response.adoc[]
 
 
 === Unassign
 
-.request
+==== Request
 include::{snippets}/workorder-unassign/http-request.adoc[]
 
-.response
+==== Response
 include::{snippets}/workorder-unassign/http-response.adoc[]
-
 

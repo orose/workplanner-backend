@@ -2,16 +2,14 @@ package no.roseweb.workplanner.services;
 
 import no.roseweb.workplanner.models.ApplicationUser;
 import no.roseweb.workplanner.models.Organization;
-import no.roseweb.workplanner.models.OrganizationUserListResponse;
+import no.roseweb.workplanner.models.responses.UserListResponse;
 import no.roseweb.workplanner.repositories.InviteRepository;
-import no.roseweb.workplanner.repositories.OrganizationRepository;
 import no.roseweb.workplanner.repositories.TeamRepository;
 import no.roseweb.workplanner.repositories.UserRepository;
 import no.roseweb.workplanner.repositories.UserTeamRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,7 +17,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -31,7 +28,7 @@ public class UserServiceTest {
     private InviteRepository inviteRepository;
 
     @MockBean
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
     @MockBean
     private TeamRepository teamRepository;
@@ -44,7 +41,7 @@ public class UserServiceTest {
 
     @Before
     public void init() {
-        service = new UserServiceImpl(inviteRepository, organizationRepository, teamRepository, userRepository, userTeamRepository);
+        service = new UserServiceImpl(inviteRepository, organizationService, teamRepository, userRepository, userTeamRepository);
     }
 
     @Test
@@ -59,11 +56,11 @@ public class UserServiceTest {
         Integer offset = 0;
         Integer limit = 10;
 
-        when(organizationRepository.findById(1L)).thenReturn(o);
+        when(organizationService.findById(1L)).thenReturn(o);
         when(userRepository.findByOrganizationId(o.getId(), offset, limit)).thenReturn(userList);
         when(userRepository.countAllByOrganizationId(o.getId())).thenReturn(2);
 
-        OrganizationUserListResponse response = service.findByOrganizationId(o.getId(), offset, limit);
+        UserListResponse response = service.findByOrganizationId(o.getId(), offset, limit);
 
         assertThat(response.getData()).isEqualTo(userList);
         assertThat(response.getOffset()).isEqualTo(offset);
