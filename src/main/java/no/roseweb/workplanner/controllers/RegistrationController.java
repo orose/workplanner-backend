@@ -26,6 +26,8 @@ public class RegistrationController {
 
         response.setStatus(HttpServletResponse.SC_CREATED);
 
+        LOG.info("User registered successfully. Email={}, OrganizationId={}",
+                createdUser.getEmail(), createdUser.getOrganizationId());
         return createdUser;
     }
 }
